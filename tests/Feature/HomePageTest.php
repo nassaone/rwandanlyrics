@@ -2,11 +2,14 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class HomePageTest extends TestCase
 {
-    public function test_home_page_renders(): void
+    use RefreshDatabase;
+
+    public function test_empty_home_page_shows_honest_empty_state(): void
     {
         $this->get('/')->assertOk()->assertSee('Rwandanlyrics')->assertSee('No lyrics published yet');
     }

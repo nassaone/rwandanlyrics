@@ -7,7 +7,7 @@ Last updated: 2026-10-20
 | 0 | Environment audit and planning | Complete |
 | 1 | Laravel foundation | Complete (verified) |
 | 2 | Database and domain models | Complete (verified) |
-| 3 | Public website | Not started |
+| 3 | Public website | Complete (tests verified; visual check on phone by owner) |
 | 4 | Authentication and authorization | Not started |
 | 5 | Admin dashboard and content management | Not started |
 | 6 | Search and discovery | Not started |
@@ -45,7 +45,7 @@ Last updated: 2026-10-20
 - Image resizing needs `gd` or Imagick (Phase 5).
 
 ## Next
-Phase 3: database-driven public website (homepage, song, artist, album and genre pages, breadcrumbs, pagination, empty states).
+Phase 4: authentication and authorization (login, roles, policies, admin/contributor boundaries).
 
 ## Phase 2 — what exists (verified 2026-10-20)
 - 7 migrations: languages, genres, artists, artist_aliases, genre_artist, albums (+album_artist), songs (+song_artist, genre_song, lyrics)
@@ -63,3 +63,23 @@ Phase 3: database-driven public website (homepage, song, artist, album and genre
 ## Phase 2 notes
 - Migrations and tests have run only on SQLite. They have not been run on MySQL yet; do this before deployment.
 - Redirects, users/roles, submissions, rights complaints, analytics, settings, audit logs and media tables come in later phases.
+
+## Phase 3 — what exists (verified 2026-10-20)
+- Public routes: `/`, `/songs`, `/songs/{slug}`, `/artists`, `/artists/{slug}`, `/albums/{slug}`, `/genres`, `/genres/{slug}`
+- All public queries go through `Song::publiclyVisible()` / `Artist::published()` / `Album::published()`; non-visible records return 404
+- Homepage sections (Latest lyrics, Artists, Albums, Genres) appear only when they have data; honest empty state otherwise
+- Song page: lyrics reading layout, artist/album/genre links, related songs, share button, per-song noindex support
+- Components: breadcrumbs, song-row; nav links in header, mobile menu and footer; paginated lists (20 per page)
+
+## Phase 3 verification
+- Pint: pass; `npm run build`: succeeded
+- `php artisan test`: 24 passed (65 assertions)
+- Bug found and fixed: `@endif@unless` in Blade (directive not recognised without a preceding non-word character)
+
+## Phase 3 deferred (with reason)
+- Trending lyrics and popular artists: need real view data (analytics, Phases 6 and 10); not faked
+- Search results page: `/search` returns 404 until Phase 6
+- Correction / rights-report links: Phases 7 and 9
+- Copy-lyrics control: needs a per-song "copying permitted" rights flag (Phase 9)
+- Official listening links and outbound click tracking: Phase 10
+- JSON-LD, sitemap, canonical overrides: Phase 8 (basic canonical = current URL)

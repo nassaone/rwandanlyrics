@@ -38,8 +38,8 @@ class Album extends Model
 
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('status', PublicationStatus::Published->value)
-            ->where('published_at', '<=', now());
+        return $query->where('albums.status', PublicationStatus::Published->value)
+            ->where('albums.published_at', '<=', now());
     }
 
     public function artists(): BelongsToMany

@@ -54,8 +54,8 @@ class Artist extends Model
 
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('status', PublicationStatus::Published->value)
-            ->where('published_at', '<=', now());
+        return $query->where('artists.status', PublicationStatus::Published->value)
+            ->where('artists.published_at', '<=', now());
     }
 
     public function aliases(): HasMany

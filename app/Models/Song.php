@@ -50,9 +50,9 @@ class Song extends Model
      */
     public function scopePubliclyVisible(Builder $query): Builder
     {
-        return $query->where('status', PublicationStatus::Published->value)
-            ->where('published_at', '<=', now())
-            ->where('rights_status', RightsStatus::Authorized->value);
+        return $query->where('songs.status', PublicationStatus::Published->value)
+            ->where('songs.published_at', '<=', now())
+            ->where('songs.rights_status', RightsStatus::Authorized->value);
     }
 
     public function album(): BelongsTo
