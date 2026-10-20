@@ -6,7 +6,7 @@ Last updated: 2026-10-20
 |---|---|---|
 | 0 | Environment audit and planning | Complete |
 | 1 | Laravel foundation | Complete (verified) |
-| 2 | Database and domain models | Not started |
+| 2 | Database and domain models | Complete (verified) |
 | 3 | Public website | Not started |
 | 4 | Authentication and authorization | Not started |
 | 5 | Admin dashboard and content management | Not started |
@@ -45,4 +45,21 @@ Last updated: 2026-10-20
 - Image resizing needs `gd` or Imagick (Phase 5).
 
 ## Next
-Phase 2: migrations, models, factories, dev seeders, and tests for artists, aliases, songs, lyrics, albums, genres, languages, with publication and rights states.
+Phase 3: database-driven public website (homepage, song, artist, album and genre pages, breadcrumbs, pagination, empty states).
+
+## Phase 2 — what exists (verified 2026-10-20)
+- 7 migrations: languages, genres, artists, artist_aliases, genre_artist, albums (+album_artist), songs (+song_artist, genre_song, lyrics)
+- Enums: PublicationStatus, RightsStatus, VerificationStatus, AlbumType
+- Models with relations, unique-slug trait, `Song::publiclyVisible()` scope; artist `normalized_name` unique to block duplicates
+- Factories for all core models; `DemoSeeder` (fictional data, placeholder text) runs only in the local environment
+- docs/DATABASE.md describes the schema and rules
+
+## Phase 2 verification
+- `php artisan migrate:fresh --seed`: succeeded (local SQLite only)
+- Pint: pass
+- `php artisan test`: 14 passed (23 assertions)
+- Bug found and fixed during verification: artist↔genre pivot table name (`genre_artist`) set explicitly on both models
+
+## Phase 2 notes
+- Migrations and tests have run only on SQLite. They have not been run on MySQL yet; do this before deployment.
+- Redirects, users/roles, submissions, rights complaints, analytics, settings, audit logs and media tables come in later phases.
