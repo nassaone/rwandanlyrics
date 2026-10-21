@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SongController;
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\EnsureUserIsActive;
@@ -95,3 +96,7 @@ Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor
 
 // Unknown URLs: send known old URLs to their new home, otherwise show the 404 page.
 Route::fallback(fn () => abort(404))->middleware(ResolveRedirects::class);
+
+Route::get('/search', SearchController::class)
+    ->middleware('throttle:60,1')
+    ->name('search');

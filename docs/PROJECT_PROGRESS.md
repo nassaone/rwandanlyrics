@@ -10,7 +10,7 @@ Last updated: 2026-10-20
 | 3 | Public website | Complete (tests verified; visual check on phone by owner) |
 | 4 | Authentication and authorization | Complete (tests verified) |
 | 5 | Admin dashboard and content management | **Complete** (5a content CRUD, 5b media, redirects, merge, users) |
-| 6 | Search and discovery | Not started |
+| 6 | Search and discovery | **Complete** (LIKE-based search; FULLTEXT deferred) |
 | 7 | Contributor and editorial workflow | Not started |
 | 8 | SEO and indexing | Not started |
 | 9 | Rights, privacy, governance | Not started |
@@ -137,3 +137,11 @@ MySQL FULLTEXT cannot be tested in this Codespace (no pdo_mysql). Decide before 
 
 ### Visibility decision (2026-10-21)
 Published artists and albums are listed on the homepage and index pages even when they have no publicly visible songs. Songs still require published + date passed + rights authorized. To do in Phase 8: automatically add noindex to artist/album pages that have no visible songs, to avoid thin content in search engines.
+
+## Phase 6 — Search (2026-10-21)
+- `/search` over songs (title, artist name, artist alias), artists (name, alias) and albums (title, album artist). Visibility rules identical to the public site. Ranking: exact, prefix, contains, newest. Wildcards escaped, min 2 / max 100 characters, noindex, throttled 60/min.
+- Tests: 128 passing (560 assertions), verified by the owner's run.
+- Deferred (needs a MySQL test environment or more design): MySQL FULLTEXT, lyrics-text search, accent-insensitive matching, typo tolerance, autocomplete, trending/popular sections (needs Phase 10 view tracking, no invented numbers until then).
+
+### Next: Phase 7 — Contributor and editorial workflow
+Submissions and corrections from contributors, review queue for editors, approve/reject with notes, revision history, audit trail.
