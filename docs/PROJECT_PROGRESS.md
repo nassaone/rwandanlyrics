@@ -8,7 +8,7 @@ Last updated: 2026-10-20
 | 1 | Laravel foundation | Complete (verified) |
 | 2 | Database and domain models | Complete (verified) |
 | 3 | Public website | Complete (tests verified; visual check on phone by owner) |
-| 4 | Authentication and authorization | Not started |
+| 4 | Authentication and authorization | Complete (tests verified) |
 | 5 | Admin dashboard and content management | Not started |
 | 6 | Search and discovery | Not started |
 | 7 | Contributor and editorial workflow | Not started |
@@ -45,7 +45,7 @@ Last updated: 2026-10-20
 - Image resizing needs `gd` or Imagick (Phase 5).
 
 ## Next
-Phase 4: authentication and authorization (login, roles, policies, admin/contributor boundaries).
+Phase 5: admin dashboard and content management (dashboard stats, CRUD for songs, lyrics, artists, albums, genres, languages, publishing workflow, SEO fields, media uploads, audit log, user management).
 
 ## Phase 2 — what exists (verified 2026-10-20)
 - 7 migrations: languages, genres, artists, artist_aliases, genre_artist, albums (+album_artist), songs (+song_artist, genre_song, lyrics)
@@ -83,3 +83,23 @@ Phase 4: authentication and authorization (login, roles, policies, admin/contrib
 - Copy-lyrics control: needs a per-song "copying permitted" rights flag (Phase 9)
 - Official listening links and outbound click tracking: Phase 10
 - JSON-LD, sitemap, canonical overrides: Phase 8 (basic canonical = current URL)
+
+## Phase 4 — what exists (verified 2026-10-21)
+- Hand-written auth (no Breeze, to avoid overwriting verified files): login, logout, register (configurable via `REGISTRATION_ENABLED`), forgot/reset password, account page (profile, password, delete)
+- Roles: user, contributor, editor, admin, super_admin; `role` and `suspended_at` columns (not mass-assignable)
+- Middleware: `EnsureUserIsActive` (suspended users are logged out), `EnsureRole:<minimum>`
+- Policies: Song, Artist, Album, Genre, Language, User (no self role changes; admins cannot mint admins)
+- `/admin` requires editor+; `/contributor` requires contributor+ (both are placeholders until Phase 5 and 7)
+- Command `php artisan rwandanlyrics:set-role <email> [role]` creates the first super admin
+- Auth POSTs rate limited (5/min, separate buckets); password reset does not reveal whether an email exists
+- docs/SECURITY.md written
+
+## Phase 4 verification
+- Migration applied, Pint pass, `npm run build` succeeded
+- `php artisan test`: 74 passed (280 assertions)
+
+## Phase 4 deferred
+- Email verification: needs real mail settings
+- Reset emails currently go to `storage/logs` (log mailer); a real mail transport is required before launch
+- User-management screens, audit log of role changes and suspensions: Phase 5
+- Role changes by the artisan command are not audited yet
