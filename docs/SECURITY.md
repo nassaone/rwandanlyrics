@@ -29,3 +29,10 @@ Role changes by this command are not yet written to an audit log (Phase 5).
 - User-management screens and audit log of role changes / suspensions (Phase 5).
 - Two-factor authentication (not planned for the first release).
 - Full-page caching must never be applied to pages that show account links; the header differs per user.
+
+## Phase 5a additions
+- All `/admin/*` routes require login, an active account and role editor or above; every action also calls a policy (`Gate::authorize`). Only admins can delete content; only admins can read the audit log.
+- Admin forms validate with Form Requests; enums, foreign keys, slugs and URLs are validated; `canonical_url` must be a real URL.
+- Significant changes (create, update, status, rights decisions, delete) are written to `audit_logs`.
+- Scheduler: production needs a cron entry running `php artisan schedule:run` every minute.
+- Known limitation: audit log entries are not tamper-proof against a database administrator.

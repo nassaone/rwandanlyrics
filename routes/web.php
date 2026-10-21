@@ -1,6 +1,12 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Admin\AlbumController as AdminAlbumController;
+use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
+use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\GenreController as AdminGenreController;
+use App\Http\Controllers\Admin\LanguageController as AdminLanguageController;
+use App\Http\Controllers\Admin\SongController as AdminSongController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArtistController;
@@ -55,7 +61,15 @@ Route::middleware(['auth', EnsureUserIsActive::class])->group(function () {
 
     Route::get('/contributor', ContributorController::class)
         ->middleware(EnsureRole::class.':contributor')->name('contributor.dashboard');
-
-    Route::get('/admin', AdminController::class)
-        ->middleware(EnsureRole::class.':editor')->name('admin.dashboard');
 });
+
+Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor'])
+    ->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', AdminController::class)->name('dashboard');
+        Route::resource('songs', AdminSongController::class)->except('show');
+        Route::resource('artists', AdminArtistController::class)->except('show');
+        Route::resource('albums', AdminAlbumController::class)->except('show');
+        Route::resource('genres', AdminGenreController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
+        Route::resource('languages', AdminLanguageController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
+        Route::get('audit', [AuditLogController::class, 'index'])->name('audit.index');
+    });

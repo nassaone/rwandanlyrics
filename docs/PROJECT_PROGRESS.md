@@ -9,7 +9,7 @@ Last updated: 2026-10-20
 | 2 | Database and domain models | Complete (verified) |
 | 3 | Public website | Complete (tests verified; visual check on phone by owner) |
 | 4 | Authentication and authorization | Complete (tests verified) |
-| 5 | Admin dashboard and content management | Not started |
+| 5 | Admin dashboard and content management | 5a complete (tests verified); 5b pending |
 | 6 | Search and discovery | Not started |
 | 7 | Contributor and editorial workflow | Not started |
 | 8 | SEO and indexing | Not started |
@@ -45,7 +45,7 @@ Last updated: 2026-10-20
 - Image resizing needs `gd` or Imagick (Phase 5).
 
 ## Next
-Phase 5: admin dashboard and content management (dashboard stats, CRUD for songs, lyrics, artists, albums, genres, languages, publishing workflow, SEO fields, media uploads, audit log, user management).
+Phase 5b: user management (roles, suspension), media uploads, redirects on slug change, duplicate-artist merge.
 
 ## Phase 2 — what exists (verified 2026-10-20)
 - 7 migrations: languages, genres, artists, artist_aliases, genre_artist, albums (+album_artist), songs (+song_artist, genre_song, lyrics)
@@ -103,3 +103,23 @@ Phase 5: admin dashboard and content management (dashboard stats, CRUD for songs
 - Reset emails currently go to `storage/logs` (log mailer); a real mail transport is required before launch
 - User-management screens, audit log of role changes and suspensions: Phase 5
 - Role changes by the artisan command are not audited yet
+
+## Phase 5a — what exists (verified 2026-10-21)
+- Admin area `/admin` (editor+): dashboard with real counts and actionable warnings, recent activity
+- CRUD: songs (lyrics revisions, rights fields, SEO fields, featured artists, genres), artists (aliases, duplicate and alias-conflict blocking), albums, genres, languages
+- Publication states: draft, pending review, scheduled, published, archived; `rwandanlyrics:publish-scheduled` runs every minute via the scheduler
+- Slugs are locked once published (genre slugs always locked); admin dates entered in Africa/Kigali, stored in UTC
+- Audit log (`audit_logs`) for create/update/status/rights/delete; page visible to admins only
+- Policies enforced on every action; only admins can delete
+
+## Phase 5a verification
+- Migration applied, Pint pass, `npm run build` succeeded
+- `php artisan test`: 100 passed (463 assertions)
+
+## Phase 5a deferred to 5b or later
+- User management screens and suspension, with audit entries
+- Media uploads (covers, artist images) and `gd`-based resizing (extension not installed in this Codespace)
+- Redirect table and automatic redirect when a published slug changes; duplicate-artist merge (depends on redirects)
+- Bulk actions; artist social links; external listening links (Phase 10)
+- Artist/album dropdowns list every record; replace with search-as-you-type for large catalogs
+- Cache invalidation: no public caching exists yet; add with Phase 11

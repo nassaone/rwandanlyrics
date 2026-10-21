@@ -24,3 +24,11 @@ Dev database: SQLite. Production target: MySQL. Timestamps stored in UTC.
 
 ## Not yet built
 users/roles, submissions, corrections, rights complaints, redirects, pages, analytics, settings, audit logs, media — later phases.
+
+## Phase 5a additions
+| Table | Purpose |
+|---|---|
+| audit_logs | Who did what: `user_id` (null for system actions), `action` (e.g. `song.created`, `song.rights_changed`), subject type/id/label, small `meta` JSON. Never stores lyrics text or secrets. |
+| users.role, users.suspended_at | Added in Phase 4 |
+
+Rules: published/scheduled content has `published_at` stored in UTC; admin forms use `ADMIN_TIMEZONE` (default Africa/Kigali). A slug is locked once `published_at` is set. `php artisan rwandanlyrics:publish-scheduled` runs every minute via the scheduler.
