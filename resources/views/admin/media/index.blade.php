@@ -16,7 +16,7 @@
                     <p class="mt-2 break-words">{{ $item->alt_text }}</p>
                     <p class="mt-1 text-xs text-muted">{{ $item->width }} x {{ $item->height }} px</p>
                     <div class="mt-2">
-                        @if ($used->contains($item->id))
+                        @if ($used->has($item->id))
                             <x-badge>In use</x-badge>
                         @else
                             <span class="text-xs text-muted">Not used</span>

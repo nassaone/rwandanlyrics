@@ -10,7 +10,6 @@ class ArtistController extends Controller
     public function index(): View
     {
         $artists = Artist::published()
-            ->whereHas('songs', fn ($q) => $q->publiclyVisible())
             ->orderBy('artists.name')->paginate(24)->withQueryString();
 
         return view('artists.index', compact('artists'));
