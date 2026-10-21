@@ -134,3 +134,6 @@ Phase 5b: user management (roles, suspension), media uploads, redirects on slug 
 
 ### Next: Phase 6 — Search and discovery
 MySQL FULLTEXT cannot be tested in this Codespace (no pdo_mysql). Decide before starting: add a devcontainer with a MySQL service, or build search with a LIKE fallback first.
+
+### Visibility decision (2026-10-21)
+Published artists and albums are listed on the homepage and index pages even when they have no publicly visible songs. Songs still require published + date passed + rights authorized. To do in Phase 8: automatically add noindex to artist/album pages that have no visible songs, to avoid thin content in search engines.
