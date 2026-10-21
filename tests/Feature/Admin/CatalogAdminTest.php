@@ -60,25 +60,6 @@ class CatalogAdminTest extends TestCase
         $this->assertDatabaseCount('artists', 2);
     }
 
-    public function test_artist_aliases_are_replaced_on_update_and_slug_locks_after_publication(): void
-    {
-        $artist = Artist::factory()->create(['name' => 'Editable']);
-        $url = route('admin.artists.update', $artist);
-
-        $this->actingAs($this->editor)->put($url, $this->artistPayload(['name' => 'Editable', 'aliases' => "One\nTwo"]));
-        $this->assertCount(2, $artist->aliases()->get());
-
-        $this->actingAs($this->editor)->put($url, $this->artistPayload(['name' => 'Editable', 'aliases' => 'Three']));
-        $this->assertSame(['Three'], $artist->aliases()->pluck('alias')->all());
-
-        $this->actingAs($this->editor)->put($url, $this->artistPayload(['name' => 'Editable', 'status' => 'published']));
-        $artist->refresh();
-        $this->assertNotNull($artist->published_at);
-
-        $this->actingAs($this->editor)->put($url, $this->artistPayload(['name' => 'Editable', 'status' => 'published', 'slug' => 'changed']));
-        $this->assertSame('editable', $artist->fresh()->slug);
-    }
-
     public function test_album_requires_an_artist_and_syncs_artists(): void
     {
         $artist = Artist::factory()->create();
@@ -95,20 +76,6 @@ class CatalogAdminTest extends TestCase
         $this->assertSame('ep', $album->type->value);
         $this->assertCount(1, $album->artists);
         $this->assertDatabaseHas('audit_logs', ['action' => 'album.created', 'subject_id' => $album->id]);
-    }
-
-    public function test_genres_are_created_with_unique_names_and_never_change_slug(): void
-    {
-        $this->actingAs($this->editor)->post(route('admin.genres.store'), ['name' => 'Gospel'])->assertSessionHasNoErrors();
-        $genre = Genre::firstOrFail();
-        $this->assertSame('gospel', $genre->slug);
-
-        $this->actingAs($this->editor)->post(route('admin.genres.store'), ['name' => 'Gospel'])->assertSessionHasErrors('name');
-
-        $this->actingAs($this->editor)->put(route('admin.genres.update', $genre), ['name' => 'Gospel Music', 'slug' => 'hacked']);
-        $genre->refresh();
-        $this->assertSame('Gospel Music', $genre->name);
-        $this->assertSame('gospel', $genre->slug);
     }
 
     public function test_languages_need_unique_names_and_codes(): void

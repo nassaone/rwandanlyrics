@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GenreRequest;
 use App\Models\Genre;
 use App\Support\AuditLogger;
+use App\Support\Redirects;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -40,9 +41,18 @@ class GenreController extends Controller
     {
         Gate::authorize('update', $genre);
 
-        // The slug is part of a public URL, so it is never changed here.
-        $genre->update($request->safe()->only(['name', 'description']));
+        $oldSlug = $genre->slug;
+        $data = $request->safe()->only(['name', 'slug', 'description']);
+        if (blank($data['slug'] ?? null)) {
+            unset($data['slug']);
+        }
+
+        $genre->update($data);
         AuditLogger::record('genre.updated', $genre);
+
+        if ($genre->slug !== $oldSlug) {
+            Redirects::record(route('genres.show', $oldSlug, false), route('genres.show', $genre->slug, false));
+        }
 
         return redirect()->route('admin.genres.index')->with('status', 'Genre saved.');
     }

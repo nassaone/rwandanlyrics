@@ -7,8 +7,11 @@
         'Albums' => ['admin.albums.index', 'admin.albums.*'],
         'Genres' => ['admin.genres.index', 'admin.genres.*'],
         'Languages' => ['admin.languages.index', 'admin.languages.*'],
+        'Media' => ['admin.media.index', 'admin.media.*'],
+        'Redirects' => ['admin.redirects.index', 'admin.redirects.*'],
     ];
     if (auth()->user()->atLeast(\App\Enums\Role::Admin)) {
+        $items['Users'] = ['admin.users.index', 'admin.users.*'];
         $items['Activity'] = ['admin.audit.index', 'admin.audit.*'];
     }
 @endphp

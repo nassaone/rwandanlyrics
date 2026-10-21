@@ -8,6 +8,7 @@ use App\Models\Concerns\HasUniqueSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -50,5 +51,10 @@ class Album extends Model
     public function songs(): HasMany
     {
         return $this->hasMany(Song::class)->orderBy('track_number');
+    }
+
+    public function cover(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'cover_id');
     }
 }

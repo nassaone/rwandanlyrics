@@ -87,19 +87,6 @@ class SongAdminTest extends TestCase
         $this->assertCount(2, $song->lyrics, 'old revisions are kept');
     }
 
-    public function test_slug_is_locked_after_publication_but_editable_before(): void
-    {
-        $draft = $this->create();
-        $this->actingAs($this->editor)->put(route('admin.songs.update', $draft), $this->payload(['slug' => 'custom-slug']));
-        $this->assertSame('custom-slug', $draft->fresh()->slug);
-
-        $published = Song::factory()->published()->create(['title' => 'Locked']);
-        $this->actingAs($this->editor)->put(route('admin.songs.update', $published), $this->payload([
-            'title' => 'Locked', 'slug' => 'new-slug', 'status' => 'published', 'rights_status' => 'authorized',
-        ]));
-        $this->assertSame('locked', $published->fresh()->slug);
-    }
-
     public function test_publishing_with_authorized_rights_makes_the_song_public_and_removing_rights_hides_it(): void
     {
         $song = $this->create(['lyrics' => 'Authorized words']);

@@ -6,13 +6,14 @@ use App\Enums\PublicationStatus;
 use App\Enums\RightsStatus;
 use App\Enums\VerificationStatus;
 use App\Http\Requests\Admin\Concerns\ChecksSchedule;
+use App\Http\Requests\Admin\Concerns\ImageRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class SongRequest extends FormRequest
 {
-    use ChecksSchedule;
+    use ChecksSchedule, ImageRules;
 
     public function rules(): array
     {
@@ -41,7 +42,7 @@ class SongRequest extends FormRequest
             'seo_description' => ['nullable', 'string', 'max:320'],
             'canonical_url' => ['nullable', 'url', 'max:500'],
             'noindex' => ['sometimes', 'boolean'],
-        ];
+        ] + $this->imageRules('cover');
     }
 
     public function after(): array

@@ -4,6 +4,8 @@
     :robots="$artist->noindex ? 'noindex,follow' : 'index,follow'">
     <x-breadcrumbs :items="['Home' => route('home'), 'Artists' => route('artists.index'), $artist->name => null]" />
 
+    <x-media-image :media="$artist->banner" class="mb-4 w-full rounded-md" />
+    <x-media-image :media="$artist->image" class="mb-4 size-32 rounded-full object-cover" />
     <h1 class="text-2xl font-semibold">{{ $artist->name }}</h1>
 
     @if ($artist->genres->isNotEmpty())

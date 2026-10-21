@@ -6,6 +6,7 @@ use App\Models\Song;
 use App\Models\User;
 use App\Support\AdminDate;
 use App\Support\AuditLogger;
+use App\Support\Redirects;
 use BackedEnum;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -18,12 +19,16 @@ class SongService
         'seo_title', 'seo_description', 'canonical_url',
     ];
 
+    public function __construct(private MediaService $media) {}
+
     public function save(Song $song, array $data, User $actor): Song
     {
         return DB::transaction(function () use ($song, $data, $actor) {
             $isNew = ! $song->exists;
             $oldStatus = $this->value($song->status);
             $oldRights = $this->value($song->rights_status);
+            $oldSlug = $song->slug;
+            $hadPublicUrl = ! $isNew && $song->published_at !== null;
 
             $attributes = Arr::only($data, self::FIELDS);
             $attributes['noindex'] = (bool) ($data['noindex'] ?? false);
@@ -33,15 +38,14 @@ class SongService
             if (($attributes['status'] ?? null) === 'published' && $attributes['published_at'] === null) {
                 $attributes['published_at'] = now();
             }
-
-            // A published URL is never changed silently; blank means "keep / generate".
-            $slugLocked = ! $isNew && $song->published_at !== null;
-            if ($slugLocked || blank($attributes['slug'] ?? null)) {
-                unset($attributes['slug']);
+            if (blank($attributes['slug'] ?? null)) {
+                unset($attributes['slug']); // blank = keep the current slug / generate one
             }
             if ($isNew) {
                 $attributes['created_by'] = $actor->id;
             }
+
+            $this->media->apply($song, 'cover_id', $data['cover'] ?? null, $data['cover_alt'] ?? null, (bool) ($data['remove_cover'] ?? false), $actor);
 
             $song->fill($attributes);
             $dirty = array_values(array_diff(array_keys($song->getDirty()), ['updated_by']));
@@ -77,6 +81,10 @@ class SongService
             $newRights = $this->value($song->rights_status);
             if (! $isNew && $newRights !== $oldRights) {
                 AuditLogger::record('song.rights_changed', $song, ['from' => $oldRights, 'to' => $newRights], $actor);
+            }
+
+            if ($hadPublicUrl && $song->slug !== $oldSlug) {
+                Redirects::record(route('songs.show', $oldSlug, false), route('songs.show', $song->slug, false), $actor);
             }
 
             return $song;

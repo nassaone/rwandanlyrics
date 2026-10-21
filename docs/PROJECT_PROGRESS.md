@@ -9,7 +9,7 @@ Last updated: 2026-10-20
 | 2 | Database and domain models | Complete (verified) |
 | 3 | Public website | Complete (tests verified; visual check on phone by owner) |
 | 4 | Authentication and authorization | Complete (tests verified) |
-| 5 | Admin dashboard and content management | 5a complete (tests verified); 5b pending |
+| 5 | Admin dashboard and content management | **Complete** (5a content CRUD, 5b media, redirects, merge, users) |
 | 6 | Search and discovery | Not started |
 | 7 | Contributor and editorial workflow | Not started |
 | 8 | SEO and indexing | Not started |
@@ -123,3 +123,14 @@ Phase 5b: user management (roles, suspension), media uploads, redirects on slug 
 - Bulk actions; artist social links; external listening links (Phase 10)
 - Artist/album dropdowns list every record; replace with search-as-you-type for large catalogs
 - Cache invalidation: no public caching exists yet; add with Phase 11
+
+## Phase 5b — Media, redirects, merge, user management (2026-10-21)
+- Image uploads for song/album covers and artist image/banner. Validated by real bytes, JPG/PNG/WebP, max 2 MB, min 200x200, random file names, alt text required. Media library with delete (admin only).
+- Slugs stay editable after publication. Changing a published slug records a 301 redirect automatically; chains collapse to one hop; loops are removed. Manual redirects under Admin > Redirects (editors add, admins delete).
+- Artist merge (admin only): moves songs, albums and genres, keeps the old name as an alias, redirects the old URL.
+- User management (admin): role changes limited to roles below your own, suspend/unsuspend (clears sessions), delete is super admin only. All audited.
+- Tests: 121 passing (534 assertions), verified by the owner's run. The four 5a tests that assumed locked slugs were replaced by `RedirectTest`.
+- Not verified by test: real browser upload on a phone (manual check recommended), image resizing (gd not installed, originals are stored as uploaded).
+
+### Next: Phase 6 — Search and discovery
+MySQL FULLTEXT cannot be tested in this Codespace (no pdo_mysql). Decide before starting: add a devcontainer with a MySQL service, or build search with a LIKE fallback first.

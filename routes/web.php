@@ -6,7 +6,10 @@ use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\GenreController as AdminGenreController;
 use App\Http\Controllers\Admin\LanguageController as AdminLanguageController;
+use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\RedirectController;
 use App\Http\Controllers\Admin\SongController as AdminSongController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArtistController;
@@ -20,20 +23,23 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SongController;
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\EnsureUserIsActive;
+use App\Http\Middleware\ResolveRedirects;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', HomeController::class)->name('home');
+Route::middleware(ResolveRedirects::class)->group(function () {
+    Route::get('/', HomeController::class)->name('home');
 
-Route::get('/songs', [SongController::class, 'index'])->name('songs.index');
-Route::get('/songs/{slug}', [SongController::class, 'show'])->name('songs.show');
+    Route::get('/songs', [SongController::class, 'index'])->name('songs.index');
+    Route::get('/songs/{slug}', [SongController::class, 'show'])->name('songs.show');
 
-Route::get('/artists', [ArtistController::class, 'index'])->name('artists.index');
-Route::get('/artists/{slug}', [ArtistController::class, 'show'])->name('artists.show');
+    Route::get('/artists', [ArtistController::class, 'index'])->name('artists.index');
+    Route::get('/artists/{slug}', [ArtistController::class, 'show'])->name('artists.show');
 
-Route::get('/albums/{slug}', [AlbumController::class, 'show'])->name('albums.show');
+    Route::get('/albums/{slug}', [AlbumController::class, 'show'])->name('albums.show');
 
-Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
-Route::get('/genres/{slug}', [GenreController::class, 'show'])->name('genres.show');
+    Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
+    Route::get('/genres/{slug}', [GenreController::class, 'show'])->name('genres.show');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
@@ -68,8 +74,24 @@ Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor
         Route::get('/', AdminController::class)->name('dashboard');
         Route::resource('songs', AdminSongController::class)->except('show');
         Route::resource('artists', AdminArtistController::class)->except('show');
+        Route::post('artists/{artist}/merge', [AdminArtistController::class, 'merge'])->name('artists.merge');
         Route::resource('albums', AdminAlbumController::class)->except('show');
         Route::resource('genres', AdminGenreController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
         Route::resource('languages', AdminLanguageController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
-        Route::get('audit', [AuditLogController::class, 'index'])->name('audit.index');
+        Route::get('media', [MediaController::class, 'index'])->name('media.index');
+        Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
+        Route::resource('redirects', RedirectController::class)->only(['index', 'store', 'destroy']);
+
+        Route::middleware(EnsureRole::class.':admin')->group(function () {
+            Route::get('audit', [AuditLogController::class, 'index'])->name('audit.index');
+            Route::get('users', [UserController::class, 'index'])->name('users.index');
+            Route::get('users/{user}', [UserController::class, 'edit'])->name('users.edit');
+            Route::patch('users/{user}/role', [UserController::class, 'updateRole'])->name('users.role');
+            Route::post('users/{user}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
+            Route::post('users/{user}/unsuspend', [UserController::class, 'unsuspend'])->name('users.unsuspend');
+            Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        });
     });
+
+// Unknown URLs: send known old URLs to their new home, otherwise show the 404 page.
+Route::fallback(fn () => abort(404))->middleware(ResolveRedirects::class);

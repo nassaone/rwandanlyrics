@@ -8,6 +8,7 @@ use App\Models\Concerns\HasUniqueSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
@@ -76,5 +77,15 @@ class Artist extends Model
     public function albums(): BelongsToMany
     {
         return $this->belongsToMany(Album::class, 'album_artist')->withPivot('is_primary');
+    }
+
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'image_id');
+    }
+
+    public function banner(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'banner_id');
     }
 }

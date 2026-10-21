@@ -32,3 +32,7 @@ users/roles, submissions, corrections, rights complaints, redirects, pages, anal
 | users.role, users.suspended_at | Added in Phase 4 |
 
 Rules: published/scheduled content has `published_at` stored in UTC; admin forms use `ADMIN_TIMEZONE` (default Africa/Kigali). A slug is locked once `published_at` is set. `php artisan rwandanlyrics:publish-scheduled` runs every minute via the scheduler.
+
+## Phase 5b additions
+- `media`: uploaded images (alt text required, width/height recorded). Referenced by `songs.cover_id`, `albums.cover_id`, `artists.image_id`, `artists.banner_id` (all nullable, `nullOnDelete`).
+- `redirects`: `from_path` unique, `to_path`, `status_code` (301). Chains are collapsed to a single hop; a redirect that would point to itself is removed.

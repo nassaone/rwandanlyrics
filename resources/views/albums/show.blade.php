@@ -5,6 +5,7 @@
     :robots="$album->noindex ? 'noindex,follow' : 'index,follow'">
     <x-breadcrumbs :items="['Home' => route('home'), $album->title => null]" />
 
+    <x-media-image :media="$album->cover" class="mb-4 max-h-80 rounded-md" />
     <h1 class="text-2xl font-semibold">{{ $album->title }}</h1>
     <p class="mt-1 text-muted">
         @foreach ($album->artists as $artist)

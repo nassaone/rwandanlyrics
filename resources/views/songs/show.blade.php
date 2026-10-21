@@ -6,7 +6,8 @@
     <x-breadcrumbs :items="['Home' => route('home'), 'Lyrics' => route('songs.index'), $song->title => null]" />
 
     <article>
-        <h1 class="text-2xl font-semibold">{{ $song->title }}</h1>
+        <x-media-image :media="$song->cover" class="mb-4 max-h-80 rounded-md" />
+    <h1 class="text-2xl font-semibold">{{ $song->title }}</h1>
 
         <p class="mt-1 text-muted">
             @foreach ($song->artists as $artist)

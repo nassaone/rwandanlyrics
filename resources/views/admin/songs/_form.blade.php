@@ -1,20 +1,19 @@
 @php
-    $locked = $song->exists && $song->published_at !== null;
     $primaryId = $song->exists ? $song->artists->firstWhere('pivot.role', 'primary')?->id : null;
     $featuredIds = $song->exists ? $song->artists->where('pivot.role', 'featured')->pluck('id')->all() : [];
     $selectedGenres = array_map('intval', (array) old('genre_ids', $song->exists ? $song->genres->pluck('id')->all() : []));
     $statusOptions = \App\Support\EnumOptions::for(\App\Enums\PublicationStatus::class);
 @endphp
-<form method="POST" action="{{ $action }}" class="space-y-8">
+<form method="POST" action="{{ $action }}" class="space-y-8" enctype="multipart/form-data">
     @csrf
     @if ($song->exists) @method('PUT') @endif
 
     <section class="space-y-4" aria-labelledby="details">
         <h2 id="details" class="text-lg font-semibold">Details</h2>
         <x-field name="title" label="Title" :value="$song->title" required />
-        <x-field name="slug" label="URL slug (leave blank to generate)" :value="$song->slug" :readonly="$locked" />
-        @if ($locked)
-            <p class="text-sm text-muted">The slug is locked because this song has been published. Changing public URLs needs redirects, which are not built yet.</p>
+        <x-field name="slug" label="URL slug (leave blank to generate)" :value="$song->slug" />
+        @if ($song->published_at)
+            <p class="text-sm text-muted">This song has been published. If you change the slug, the old URL will redirect to the new one.</p>
         @endif
         <x-select name="primary_artist_id" label="Primary artist" :options="$artists" :selected="$primaryId" placeholder="Choose an artist" required />
         <x-select name="featured_artist_ids" label="Featured / additional artists (optional)" :options="$artists" :selected="$featuredIds" :multiple="true" />
@@ -35,6 +34,11 @@
             </div>
         </fieldset>
         <x-textarea name="description" label="Editorial notes (optional)" rows="4" :value="$song->description" />
+    </section>
+
+    <section class="space-y-4" aria-labelledby="cover-heading">
+        <h2 id="cover-heading" class="text-lg font-semibold">Cover image</h2>
+        <x-image-field name="cover" label="Cover (optional)" :media="$song->exists ? $song->cover : null" />
     </section>
 
     <section class="space-y-4" aria-labelledby="lyrics-heading">

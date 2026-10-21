@@ -1,18 +1,17 @@
 @php
-    $locked = $artist->exists && $artist->published_at !== null;
     $selectedGenres = array_map('intval', (array) old('genre_ids', $artist->exists ? $artist->genres->pluck('id')->all() : []));
     $aliasText = $artist->exists ? $artist->aliases->pluck('alias')->join("\n") : '';
 @endphp
-<form method="POST" action="{{ $action }}" class="space-y-8">
+<form method="POST" action="{{ $action }}" class="space-y-8" enctype="multipart/form-data">
     @csrf
     @if ($artist->exists) @method('PUT') @endif
 
     <section class="space-y-4" aria-labelledby="details">
         <h2 id="details" class="text-lg font-semibold">Profile</h2>
         <x-field name="name" label="Name" :value="$artist->name" required />
-        <x-field name="slug" label="URL slug (leave blank to generate)" :value="$artist->slug" :readonly="$locked" />
-        @if ($locked)
-            <p class="text-sm text-muted">The slug is locked because this artist has been published.</p>
+        <x-field name="slug" label="URL slug (leave blank to generate)" :value="$artist->slug" />
+        @if ($artist->published_at)
+            <p class="text-sm text-muted">This artist has been published. If you change the slug, the old URL will redirect to the new one.</p>
         @endif
         <x-textarea name="aliases" label="Alternative spellings (one per line)" rows="3" :value="$aliasText" />
         <x-textarea name="bio" label="Biography" rows="8" :value="$artist->bio" />
@@ -30,6 +29,12 @@
                 @endforelse
             </div>
         </fieldset>
+    </section>
+
+    <section class="space-y-6" aria-labelledby="images-heading">
+        <h2 id="images-heading" class="text-lg font-semibold">Images</h2>
+        <x-image-field name="image" label="Profile image (optional)" :media="$artist->exists ? $artist->image : null" />
+        <x-image-field name="banner" label="Banner (optional)" :media="$artist->exists ? $artist->banner : null" />
     </section>
 
     <section class="space-y-4" aria-labelledby="publishing">

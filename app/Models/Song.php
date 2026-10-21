@@ -91,4 +91,9 @@ class Song extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function cover(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'cover_id');
+    }
 }

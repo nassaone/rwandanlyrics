@@ -7,8 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AlbumRequest;
 use App\Models\Album;
 use App\Models\Artist;
+use App\Models\User;
+use App\Services\MediaService;
 use App\Support\AdminDate;
 use App\Support\AuditLogger;
+use App\Support\Redirects;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,6 +21,8 @@ use Illuminate\Support\Facades\Gate;
 
 class AlbumController extends Controller
 {
+    public function __construct(private MediaService $media) {}
+
     public function index(Request $request): View
     {
         Gate::authorize('viewAny', Album::class);
@@ -43,7 +48,7 @@ class AlbumController extends Controller
     {
         Gate::authorize('create', Album::class);
 
-        $album = $this->persist(new Album, $request->validated());
+        $album = $this->persist(new Album, $request->validated(), $request->user());
 
         return redirect()->route('admin.albums.edit', $album)->with('status', 'Album created.');
     }
@@ -52,7 +57,7 @@ class AlbumController extends Controller
     {
         Gate::authorize('update', $album);
 
-        $album->load('artists');
+        $album->load(['artists', 'cover']);
 
         return view('admin.albums.edit', ['album' => $album, 'artists' => $this->artists()]);
     }
@@ -61,7 +66,7 @@ class AlbumController extends Controller
     {
         Gate::authorize('update', $album);
 
-        $this->persist($album, $request->validated());
+        $this->persist($album, $request->validated(), $request->user());
 
         return redirect()->route('admin.albums.edit', $album)->with('status', 'Album saved.');
     }
@@ -81,11 +86,13 @@ class AlbumController extends Controller
         return Artist::orderBy('name')->pluck('name', 'id');
     }
 
-    private function persist(Album $album, array $data): Album
+    private function persist(Album $album, array $data, User $actor): Album
     {
-        return DB::transaction(function () use ($album, $data) {
+        return DB::transaction(function () use ($album, $data, $actor) {
             $isNew = ! $album->exists;
             $oldStatus = $album->status?->value;
+            $oldSlug = $album->slug;
+            $hadPublicUrl = ! $isNew && $album->published_at !== null;
 
             $attributes = Arr::only($data, ['title', 'slug', 'type', 'release_date', 'description', 'status', 'seo_title', 'seo_description']);
             $attributes['noindex'] = (bool) ($data['noindex'] ?? false);
@@ -94,9 +101,11 @@ class AlbumController extends Controller
             if (($attributes['status'] ?? null) === 'published' && $attributes['published_at'] === null) {
                 $attributes['published_at'] = now();
             }
-            if ((! $isNew && $album->published_at !== null) || blank($attributes['slug'] ?? null)) {
+            if (blank($attributes['slug'] ?? null)) {
                 unset($attributes['slug']);
             }
+
+            $this->media->apply($album, 'cover_id', $data['cover'] ?? null, $data['cover_alt'] ?? null, (bool) ($data['remove_cover'] ?? false), $actor);
 
             $album->fill($attributes);
             $dirty = array_keys($album->getDirty());
@@ -113,6 +122,9 @@ class AlbumController extends Controller
             }
             if (! $isNew && $album->status->value !== $oldStatus) {
                 AuditLogger::record('album.status_changed', $album, ['from' => $oldStatus, 'to' => $album->status->value]);
+            }
+            if ($hadPublicUrl && $album->slug !== $oldSlug) {
+                Redirects::record(route('albums.show', $oldSlug, false), route('albums.show', $album->slug, false), $actor);
             }
 
             return $album;

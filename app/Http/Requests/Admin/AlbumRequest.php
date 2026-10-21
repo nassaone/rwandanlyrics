@@ -5,13 +5,14 @@ namespace App\Http\Requests\Admin;
 use App\Enums\AlbumType;
 use App\Enums\PublicationStatus;
 use App\Http\Requests\Admin\Concerns\ChecksSchedule;
+use App\Http\Requests\Admin\Concerns\ImageRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class AlbumRequest extends FormRequest
 {
-    use ChecksSchedule;
+    use ChecksSchedule, ImageRules;
 
     public function rules(): array
     {
@@ -28,7 +29,7 @@ class AlbumRequest extends FormRequest
             'seo_title' => ['nullable', 'string', 'max:255'],
             'seo_description' => ['nullable', 'string', 'max:320'],
             'noindex' => ['sometimes', 'boolean'],
-        ];
+        ] + $this->imageRules('cover');
     }
 
     public function after(): array

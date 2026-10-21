@@ -36,3 +36,9 @@ Role changes by this command are not yet written to an audit log (Phase 5).
 - Significant changes (create, update, status, rights decisions, delete) are written to `audit_logs`.
 - Scheduler: production needs a cron entry running `php artisan schedule:run` every minute.
 - Known limitation: audit log entries are not tamper-proof against a database administrator.
+
+## Phase 5b additions
+- Uploads are validated by real image bytes (`getimagesize`), not the client MIME type or file name. Only JPG/PNG/WebP, 2 MB max, at least 200x200 pixels. Files are stored under random names.
+- Alt text is required for every uploaded image.
+- User management (role changes, suspension, deletion) is admin-only, audited, and blocked for the admin's own account. Suspending a user clears their remember token and database sessions.
+- Manual redirects must be local paths, cannot target `/admin`, and cannot create loops.

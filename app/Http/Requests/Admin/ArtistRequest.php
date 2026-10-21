@@ -5,6 +5,7 @@ namespace App\Http\Requests\Admin;
 use App\Enums\PublicationStatus;
 use App\Enums\VerificationStatus;
 use App\Http\Requests\Admin\Concerns\ChecksSchedule;
+use App\Http\Requests\Admin\Concerns\ImageRules;
 use App\Models\Artist;
 use App\Models\ArtistAlias;
 use Illuminate\Foundation\Http\FormRequest;
@@ -13,7 +14,7 @@ use Illuminate\Validation\Validator;
 
 class ArtistRequest extends FormRequest
 {
-    use ChecksSchedule;
+    use ChecksSchedule, ImageRules;
 
     protected function prepareForValidation(): void
     {
@@ -39,7 +40,7 @@ class ArtistRequest extends FormRequest
             'seo_title' => ['nullable', 'string', 'max:255'],
             'seo_description' => ['nullable', 'string', 'max:320'],
             'noindex' => ['sometimes', 'boolean'],
-        ];
+        ] + $this->imageRules('image') + $this->imageRules('banner');
     }
 
     public function after(): array
