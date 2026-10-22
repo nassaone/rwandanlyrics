@@ -1,4 +1,7 @@
 <x-layouts.app title="Rwandan music, artists and lyrics">
+@push('head')
+    <x-json-ld :data="\App\Support\SeoSchema::website()" />
+@endpush
     <h1 class="text-2xl font-semibold">Rwandanlyrics</h1>
     <p class="mt-1 text-muted">Discover Rwandan music, artists, albums and authorized lyrics.</p>
 

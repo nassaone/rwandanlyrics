@@ -2,6 +2,9 @@
     :title="$artist->seo_title ?: $artist->name.' - lyrics and songs'"
     :description="$artist->seo_description ?: (Str::limit(strip_tags((string) $artist->bio), 155) ?: 'Songs and lyrics by '.$artist->name.' on Rwandanlyrics.')"
     :robots="$artist->noindex ? 'noindex,follow' : 'index,follow'">
+@push('head')
+    <x-json-ld :data="\App\Support\SeoSchema::artist($artist)" />
+@endpush
     <x-breadcrumbs :items="['Home' => route('home'), 'Artists' => route('artists.index'), $artist->name => null]" />
 
     <x-media-image :media="$artist->banner" class="mb-4 w-full rounded-md" />

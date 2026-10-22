@@ -1,16 +1,21 @@
-@props(['title' => null, 'description' => 'Discover Rwandan music, artists, albums and authorized lyrics.', 'robots' => 'index,follow'])
+@props(['title' => null, 'description' => 'Discover Rwandan music, artists, albums and authorized lyrics.', 'robots' => 'index,follow', 'ogType' => 'website'])
+@php $pageDescription = trim($__env->yieldPushContent('seo_description')) ?: $description; @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ? $title.' | ' : '' }}{{ config('app.name') }}</title>
-    <meta name="description" content="{{ $description }}">
+    <meta name="description" content="{{ $pageDescription }}">
     <meta name="robots" content="{{ $robots }}">
     <link rel="canonical" href="{{ url()->current() }}">
     <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:title" content="{{ $title ?? config('app.name') }}">
-    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:type" content="{{ $ogType }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta name="twitter:card" content="summary">
+    @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col">

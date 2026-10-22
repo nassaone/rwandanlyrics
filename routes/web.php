@@ -23,6 +23,7 @@ use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SongController;
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\EnsureUserIsActive;
@@ -118,3 +119,9 @@ Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor
         Route::post('submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
         Route::post('submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
     });
+
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('seo.robots');
+Route::get('/sitemap.xml', [SeoController::class, 'index'])->name('seo.sitemap');
+Route::get('/sitemaps/{type}-{page}.xml', [SeoController::class, 'show'])
+    ->where(['type' => 'pages|songs|artists|albums|genres', 'page' => '[0-9]+'])
+    ->name('seo.sitemap.show');

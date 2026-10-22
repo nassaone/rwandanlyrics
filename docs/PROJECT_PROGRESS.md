@@ -12,7 +12,7 @@ Last updated: 2026-10-20
 | 5 | Admin dashboard and content management | **Complete** (5a content CRUD, 5b media, redirects, merge, users) |
 | 6 | Search and discovery | **Complete** (LIKE-based search; FULLTEXT deferred) |
 | 7 | Contributor and editorial workflow | **Complete** (submissions, review queue, corrections) |
-| 8 | SEO and indexing | Not started |
+| 8 | SEO and indexing | **Complete** (sitemaps, robots, JSON-LD, noindex for thin pages) |
 | 9 | Rights, privacy, governance | Not started |
 | 10 | Analytics and monetization readiness | Not started |
 | 11 | Performance, accessibility, security audit | Not started |
@@ -153,3 +153,11 @@ Submissions and corrections from contributors, review queue for editors, approve
 
 ### Next: Phase 8 — SEO and indexing
 Sitemaps, canonical URLs, JSON-LD, robots.txt, meta tags, noindex for artist/album pages with no visible songs, redirect and 404 hygiene.
+
+## Phase 8 — SEO and indexing (2026-10-22)
+- `/robots.txt` (disallows everything unless `APP_ENV=production`), `/sitemap.xml` index with chunked sitemaps (1000 URLs each) listing only public, indexable content. Artist and album pages with no visible songs send `X-Robots-Tag: noindex, follow` and are left out of the sitemap. JSON-LD on home, song, artist, album pages (never includes lyric text). Details in `docs/SEO.md`.
+- Tests: 151 passing (672 assertions), verified by the owner's run.
+- Notes: song/artist/album pages already built their own title, description and robots, so the page-level description stack in the layout is only used by pages that opt in. Sitemap caching, per-page share images and the canonical handling of paginated lists are deferred (Phase 11). Real-world checks still to do after deployment: Search Console submission, rich results test.
+
+### Next: Phase 9 — Rights, privacy and governance
+Privacy policy, terms, copyright and takedown pages, a complaint/takedown form with a review workflow (removing content instantly hides it), correction and report links on song pages, and a lyrics copy/print policy.

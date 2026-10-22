@@ -3,6 +3,9 @@
     :title="$song->seo_title ?: $song->title.' lyrics'.($artistNames ? ' - '.$artistNames : '')"
     :description="$song->seo_description ?: 'Lyrics of '.$song->title.($artistNames ? ' by '.$artistNames : '').' on Rwandanlyrics.'"
     :robots="$song->noindex ? 'noindex,follow' : 'index,follow'">
+@push('head')
+    <x-json-ld :data="\App\Support\SeoSchema::song($song)" />
+@endpush
     <x-breadcrumbs :items="['Home' => route('home'), 'Lyrics' => route('songs.index'), $song->title => null]" />
 
     <article>

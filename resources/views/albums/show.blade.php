@@ -3,6 +3,9 @@
     :title="$album->seo_title ?: $album->title.($artistNames ? ' - '.$artistNames : '')"
     :description="$album->seo_description ?: ($album->title.' tracklist and lyrics on Rwandanlyrics.')"
     :robots="$album->noindex ? 'noindex,follow' : 'index,follow'">
+@push('head')
+    <x-json-ld :data="\App\Support\SeoSchema::album($album)" />
+@endpush
     <x-breadcrumbs :items="['Home' => route('home'), $album->title => null]" />
 
     <x-media-image :media="$album->cover" class="mb-4 max-h-80 rounded-md" />
