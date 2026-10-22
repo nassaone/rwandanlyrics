@@ -8,7 +8,7 @@
         <a href="{{ route('admin.dashboard') }}" class="{{ $link }}">Admin</a>
     @endif
     @if (auth()->user()->atLeast(\App\Enums\Role::Contributor))
-        <a href="{{ route('contributor.dashboard') }}" class="{{ $link }}">Contribute</a>
+        <a href="{{ route('contribute.index') }}" class="{{ $link }}">Contribute</a>
     @endif
     <a href="{{ route('account.edit') }}" class="{{ $link }}">Account</a>
     <form method="POST" action="{{ route('logout') }}" class="{{ $block ? '' : 'inline' }}">
