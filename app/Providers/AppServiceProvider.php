@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\CountViews;
 use App\Http\Middleware\NoindexThinContent;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\URL;
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        app(Kernel::class)->appendMiddlewareToGroup('web', CountViews::class);
         app(Kernel::class)->appendMiddlewareToGroup('web', NoindexThinContent::class);
         if (getenv('CODESPACES') === 'true') {
             URL::forceScheme('https');

@@ -6,6 +6,7 @@ use App\Models\Album;
 use App\Models\Artist;
 use App\Models\Genre;
 use App\Models\Song;
+use App\Services\ViewStats;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
@@ -22,6 +23,8 @@ class HomeController extends Controller
 
         $genres = Genre::whereHas('songs', fn ($q) => $q->publiclyVisible())->orderBy('name')->get();
 
-        return view('home', compact('latestSongs', 'artists', 'albums', 'genres'));
+        $popularSongs = app(ViewStats::class)->popularSongs();
+
+        return view('home', compact('latestSongs', 'popularSongs', 'artists', 'albums', 'genres'));
     }
 }

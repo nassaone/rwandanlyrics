@@ -11,6 +11,18 @@
         </div>
     @endif
 
+    @if ($popularSongs->isNotEmpty())
+        <section class="mt-8" aria-labelledby="popular">
+            <h2 id="popular" class="text-lg font-semibold">Popular this week</h2>
+            <ul class="mt-2">
+                @foreach ($popularSongs as $song)
+                    <x-song-row :song="$song" />
+                @endforeach
+            </ul>
+        </section>
+    @endif
+
+
     @if ($latestSongs->isNotEmpty())
         <section class="mt-8" aria-labelledby="latest">
             <h2 id="latest" class="text-lg font-semibold">Latest lyrics</h2>

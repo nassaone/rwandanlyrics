@@ -15,4 +15,10 @@ return [
         'corrections' => env('CONTACT_CORRECTIONS_EMAIL', 'corrections@yourdomain.com'),
         'privacy' => env('CONTACT_PRIVACY_EMAIL', 'privacy@yourdomain.com'),
     ],
+
+    'analytics' => [
+        'enabled' => env('ANALYTICS_ENABLED', true),
+        'popular_days' => 7,
+        'min_views' => 3,
+    ],
 ];

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admin\AlbumController as AdminAlbumController;
+use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\GenreController as AdminGenreController;
@@ -131,3 +132,8 @@ Route::get('/privacy', LegalPageController::class)->defaults('page', 'privacy')-
 Route::get('/copyright', LegalPageController::class)->defaults('page', 'copyright')->name('legal.copyright');
 Route::get('/takedown', LegalPageController::class)->defaults('page', 'takedown')->name('legal.takedown');
 Route::get('/report-lyrics-errors', LegalPageController::class)->defaults('page', 'corrections')->name('legal.corrections');
+
+Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor'])
+    ->prefix('admin')->name('admin.')->group(function () {
+        Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+    });

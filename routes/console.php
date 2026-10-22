@@ -9,3 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('rwandanlyrics:publish-scheduled')->everyMinute();
+
+Schedule::command('rwandanlyrics:prune-analytics')->daily();

@@ -14,7 +14,7 @@ Last updated: 2026-10-20
 | 7 | Contributor and editorial workflow | **Complete** (submissions, review queue, corrections) |
 | 8 | SEO and indexing | **Complete** (sitemaps, robots, JSON-LD, noindex for thin pages) |
 | 9 | Rights, privacy, governance | **Complete** (policy pages, takedown runbook, preflight; see open items) |
-| 10 | Analytics and monetization readiness | Not started |
+| 10 | Analytics and monetization readiness | **Complete for first-party view counting** (ads and outbound-link tracking deferred by choice) |
 | 11 | Performance, accessibility, security audit | Not started |
 | 12 | Deployment and launch | Not started |
 
@@ -176,3 +176,11 @@ Privacy policy, terms, copyright and takedown pages, a complaint/takedown form w
 - Deferred: per-song "allow copy/print" flag, 410 status for removed songs, a complaint form with an internal case queue.
 
 ### Next: Phase 10 — Analytics and monetization readiness
+
+## Phase 10 — First-party view counting (2026-10-22)
+- One view per visitor per page per day for songs, artists and albums, using a daily-rotating one-way hash (no IP, user agent or cookie stored; raw rows pruned after 2 days). Bots, prefetch, Do Not Track / Global Privacy Control, staff and non-public pages are not counted. Homepage "Popular this week" uses only real counts (min 3 views, visible songs only) and hides when nothing qualifies. Admin > Analytics for editors and above. Details in `docs/ANALYTICS.md`.
+- Tests: owner reported all passing. No cookies are set, so no consent banner is needed yet.
+- Deferred by choice: Google Analytics / AdSense, outbound-link tracking, ad slots, charts over time, caching the popular list.
+
+### Next: Phase 11 — Performance, accessibility and security audit
+Review indexes and N+1 queries, caching with correct invalidation, headers (CSP, HSTS), rate limits, upload and auth hardening, accessibility pass, remove the old /contributor placeholder, dependency audit.

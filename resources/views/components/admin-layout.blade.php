@@ -8,6 +8,7 @@
         'Genres' => ['admin.genres.index', 'admin.genres.*'],
         'Languages' => ['admin.languages.index', 'admin.languages.*'],
         'Submissions' => ['admin.submissions.index', 'admin.submissions.*'],
+        'Analytics' => ['admin.analytics.index', 'admin.analytics.*'],
         'Media' => ['admin.media.index', 'admin.media.*'],
         'Redirects' => ['admin.redirects.index', 'admin.redirects.*'],
     ];
