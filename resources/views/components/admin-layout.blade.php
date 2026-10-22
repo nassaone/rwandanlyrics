@@ -7,6 +7,7 @@
         'Albums' => ['admin.albums.index', 'admin.albums.*'],
         'Genres' => ['admin.genres.index', 'admin.genres.*'],
         'Languages' => ['admin.languages.index', 'admin.languages.*'],
+        'Submissions' => ['admin.submissions.index', 'admin.submissions.*'],
         'Media' => ['admin.media.index', 'admin.media.*'],
         'Redirects' => ['admin.redirects.index', 'admin.redirects.*'],
     ];

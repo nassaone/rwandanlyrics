@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\LanguageController as AdminLanguageController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\RedirectController;
 use App\Http\Controllers\Admin\SongController as AdminSongController;
+use App\Http\Controllers\Admin\SubmissionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlbumController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HomeController;
@@ -100,3 +102,19 @@ Route::fallback(fn () => abort(404))->middleware(ResolveRedirects::class);
 Route::get('/search', SearchController::class)
     ->middleware('throttle:60,1')
     ->name('search');
+
+Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':contributor'])
+    ->prefix('contribute')->name('contribute.')->group(function () {
+        Route::get('/', [ContributionController::class, 'index'])->name('index');
+        Route::get('/new', [ContributionController::class, 'create'])->name('create');
+        Route::post('/', [ContributionController::class, 'store'])->middleware('throttle:20,60,submit')->name('store');
+        Route::get('/{submission}', [ContributionController::class, 'show'])->name('show');
+    });
+
+Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor'])
+    ->prefix('admin')->name('admin.')->group(function () {
+        Route::get('submissions', [SubmissionController::class, 'index'])->name('submissions.index');
+        Route::get('submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
+        Route::post('submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
+        Route::post('submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
+    });

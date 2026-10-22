@@ -11,7 +11,7 @@ Last updated: 2026-10-20
 | 4 | Authentication and authorization | Complete (tests verified) |
 | 5 | Admin dashboard and content management | **Complete** (5a content CRUD, 5b media, redirects, merge, users) |
 | 6 | Search and discovery | **Complete** (LIKE-based search; FULLTEXT deferred) |
-| 7 | Contributor and editorial workflow | Not started |
+| 7 | Contributor and editorial workflow | **Complete** (submissions, review queue, corrections) |
 | 8 | SEO and indexing | Not started |
 | 9 | Rights, privacy, governance | Not started |
 | 10 | Analytics and monetization readiness | Not started |
@@ -145,3 +145,11 @@ Published artists and albums are listed on the homepage and index pages even whe
 
 ### Next: Phase 7 — Contributor and editorial workflow
 Submissions and corrections from contributors, review queue for editors, approve/reject with notes, revision history, audit trail.
+
+## Phase 7 — Contributor and editorial workflow (2026-10-22)
+- Contributors submit new songs or lyric corrections at `/contribute`; editors review at Admin > Submissions. Approve creates a hidden DRAFT with rights "pending" (new song) or a new lyrics revision (correction). Decline needs a reason. One review per submission. Limits: 10 pending per contributor, 20 submissions/hour.
+- Tests: 141 passing (623 assertions), verified by the owner's run.
+- Not done yet: menu link to /contribute, "Suggest a correction" link on song pages (planned with Phase 9 report/correction links), email notifications to contributors (needs mail transport), contributor-visible edit/withdraw of a pending submission, album handling on approval (editor sets the album in the song form).
+
+### Next: Phase 8 — SEO and indexing
+Sitemaps, canonical URLs, JSON-LD, robots.txt, meta tags, noindex for artist/album pages with no visible songs, redirect and 404 hygiene.
