@@ -22,6 +22,7 @@ use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SongController;
@@ -125,3 +126,8 @@ Route::get('/sitemap.xml', [SeoController::class, 'index'])->name('seo.sitemap')
 Route::get('/sitemaps/{type}-{page}.xml', [SeoController::class, 'show'])
     ->where(['type' => 'pages|songs|artists|albums|genres', 'page' => '[0-9]+'])
     ->name('seo.sitemap.show');
+
+Route::get('/privacy', LegalPageController::class)->defaults('page', 'privacy')->name('legal.privacy');
+Route::get('/copyright', LegalPageController::class)->defaults('page', 'copyright')->name('legal.copyright');
+Route::get('/takedown', LegalPageController::class)->defaults('page', 'takedown')->name('legal.takedown');
+Route::get('/report-lyrics-errors', LegalPageController::class)->defaults('page', 'corrections')->name('legal.corrections');

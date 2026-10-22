@@ -58,6 +58,14 @@
         <div class="mt-6" x-data>
             <x-button variant="secondary" @click="navigator.share ? navigator.share({ title: document.title, url: location.href }) : navigator.clipboard.writeText(location.href)">Share</x-button>
         </div>
+    <footer class="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-4 text-sm text-muted">
+            <a href="{{ route('legal.corrections') }}" class="hover:text-accent-600">Report an error</a>
+            @can('create', \App\Models\Submission::class)
+                <a href="{{ route('contribute.create', ['song' => $song->slug]) }}" class="hover:text-accent-600">Suggest a correction</a>
+            @endcan
+            <a href="{{ route('legal.takedown') }}" class="hover:text-accent-600">Copyright and takedown requests</a>
+        </footer>
+
     </article>
 
     @if ($related->isNotEmpty())

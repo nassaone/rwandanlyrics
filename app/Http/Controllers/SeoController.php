@@ -7,6 +7,7 @@ use App\Models\Artist;
 use App\Models\Genre;
 use App\Models\Song;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Route;
 
 class SeoController extends Controller
 {
@@ -49,7 +50,13 @@ class SeoController extends Controller
         $urls = '';
 
         if ($type === 'pages') {
-            foreach (['/', route('songs.index', [], false), route('artists.index', [], false), route('albums.index', [], false), route('genres.index', [], false)] as $path) {
+            $paths = ['/'];
+            foreach (['songs.index', 'artists.index', 'albums.index', 'genres.index', 'legal.privacy', 'legal.copyright', 'legal.takedown', 'legal.corrections'] as $name) {
+                if (Route::has($name)) {
+                    $paths[] = route($name, [], false);
+                }
+            }
+            foreach ($paths as $path) {
                 $urls .= '<url><loc>'.e(url($path)).'</loc></url>';
             }
         } else {

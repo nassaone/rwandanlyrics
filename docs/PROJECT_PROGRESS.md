@@ -13,7 +13,7 @@ Last updated: 2026-10-20
 | 6 | Search and discovery | **Complete** (LIKE-based search; FULLTEXT deferred) |
 | 7 | Contributor and editorial workflow | **Complete** (submissions, review queue, corrections) |
 | 8 | SEO and indexing | **Complete** (sitemaps, robots, JSON-LD, noindex for thin pages) |
-| 9 | Rights, privacy, governance | Not started |
+| 9 | Rights, privacy, governance | **Complete** (policy pages, takedown runbook, preflight; see open items) |
 | 10 | Analytics and monetization readiness | Not started |
 | 11 | Performance, accessibility, security audit | Not started |
 | 12 | Deployment and launch | Not started |
@@ -161,3 +161,18 @@ Sitemaps, canonical URLs, JSON-LD, robots.txt, meta tags, noindex for artist/alb
 
 ### Next: Phase 9 — Rights, privacy and governance
 Privacy policy, terms, copyright and takedown pages, a complaint/takedown form with a review workflow (removing content instantly hides it), correction and report links on song pages, and a lyrics copy/print policy.
+
+## Phase 9 — Rights, privacy and governance (2026-10-22)
+- Public pages from the owner's own policy text: `/privacy`, `/copyright`, `/takedown`, `/report-lyrics-errors` (Markdown in `resources/policies/`, contact emails from `CONTACT_*_EMAIL` env vars). Linked from the footer and sitemap; song pages link to "Report an error", "Suggest a correction" (contributors) and takedown requests.
+- Takedown handling is email-based (as the owner's policy states). Setting a song's rights to Removed/Restricted/Pending hides it at once from its page, search and the sitemap (tested). Runbook in `docs/GOVERNANCE.md`.
+- `php artisan rwandanlyrics:preflight` fails until production settings and real contact emails are in place.
+- Bug fixed: the sitemap "pages" list referenced a non-existent albums index route.
+- Tests: 159 passing (743 assertions), verified by the owner's run.
+
+### Open items before launch (owner)
+- Replace the `@yourdomain.com` placeholders: set `CONTACT_COPYRIGHT_EMAIL`, `CONTACT_CORRECTIONS_EMAIL`, `CONTACT_PRIVACY_EMAIL` and `APP_URL` in the production environment.
+- Have the policy texts reviewed by a qualified person; add a Terms of Use page (the copyright policy refers to "applicable terms").
+- The privacy policy mentions comments (none exist) and advertising/analytics (not enabled). Keep it accurate; add a cookie-consent banner before enabling non-essential cookies (Phase 10).
+- Deferred: per-song "allow copy/print" flag, 410 status for removed songs, a complaint form with an internal case queue.
+
+### Next: Phase 10 — Analytics and monetization readiness

@@ -9,4 +9,10 @@ return [
 
     // Filesystem disk for uploaded images (use an S3-compatible disk later).
     'media_disk' => env('MEDIA_DISK', 'public'),
+
+    'contact' => [
+        'copyright' => env('CONTACT_COPYRIGHT_EMAIL', 'copyright@yourdomain.com'),
+        'corrections' => env('CONTACT_CORRECTIONS_EMAIL', 'corrections@yourdomain.com'),
+        'privacy' => env('CONTACT_PRIVACY_EMAIL', 'privacy@yourdomain.com'),
+    ],
 ];

@@ -51,6 +51,10 @@
                 <a href="{{ route('songs.index') }}" class="hover:text-accent-600">Lyrics</a>
                 <a href="{{ route('artists.index') }}" class="hover:text-accent-600">Artists</a>
                 <a href="{{ route('genres.index') }}" class="hover:text-accent-600">Genres</a>
+                <a href="{{ route('legal.privacy') }}" class="hover:text-accent-600">Privacy</a>
+                <a href="{{ route('legal.copyright') }}" class="hover:text-accent-600">Copyright policy</a>
+                <a href="{{ route('legal.takedown') }}" class="hover:text-accent-600">Takedown requests</a>
+                <a href="{{ route('legal.corrections') }}" class="hover:text-accent-600">Report an error</a>
             </nav>
         </div>
     </footer>
