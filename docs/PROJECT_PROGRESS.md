@@ -184,3 +184,11 @@ Privacy policy, terms, copyright and takedown pages, a complaint/takedown form w
 
 ### Next: Phase 11 — Performance, accessibility and security audit
 Review indexes and N+1 queries, caching with correct invalidation, headers (CSP, HSTS), rate limits, upload and auth hardening, accessibility pass, remove the old /contributor placeholder, dependency audit.
+
+## Phase 10 — First-party view counting (2026-10-22)
+- One view per visitor per page per day for songs, artists and albums, using a daily-rotating one-way hash (no IP, user agent or cookie stored; raw rows pruned after 2 days). Bots, prefetch, Do Not Track / Global Privacy Control, staff and non-public pages are not counted. Homepage "Popular this week" uses only real counts (min 3 views, visible songs only) and hides when nothing qualifies. Admin > Analytics for editors and above. Details in `docs/ANALYTICS.md`.
+- Tests: owner reported all passing. No cookies are set, so no consent banner is needed yet.
+- Deferred by choice: Google Analytics / AdSense, outbound-link tracking, ad slots, charts over time, caching the popular list.
+
+### Next: Phase 11 — Performance, accessibility and security audit
+Review indexes and N+1 queries, caching with correct invalidation, headers (CSP, HSTS), rate limits, upload and auth hardening, accessibility pass, remove the old /contributor placeholder, dependency audit.
