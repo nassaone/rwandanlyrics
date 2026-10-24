@@ -8,7 +8,7 @@
         <label class="sr-only" for="q">Search titles</label>
         <input id="q" name="q" value="{{ request('q') }}" placeholder="Search titles" class="min-w-0 flex-1 min-h-11 rounded-lg border border-line px-3 py-2.5 text-base">
         <label class="sr-only" for="status">Status</label>
-        <select id="status" name="status" class="rounded-md border border-line bg-white px-3 py-2 text-base">
+        <select id="status" name="status" class="rounded-md border border-line bg-page px-3 py-2 text-base">
             <option value="">Any status</option>
             @foreach (\App\Support\EnumOptions::for(\App\Enums\PublicationStatus::class) as $value => $label)
                 <option value="{{ $value }}" @selected(request('status') === $value)>{{ $label }}</option>

@@ -11,7 +11,7 @@ class SongController extends Controller
 {
     public function index(): View
     {
-        $songs = Song::publiclyVisible()->with('artists')
+        $songs = Song::publiclyVisible()->with(['artists.image', 'cover', 'album.cover'])
             ->latest('songs.published_at')->paginate(20)->withQueryString();
 
         return view('songs.index', compact('songs'));
@@ -39,7 +39,7 @@ class SongController extends Controller
                 $query->whereHas('artists', fn ($q) => $q->whereIn('artists.id', $artistIds))
                     ->orWhereHas('genres', fn ($q) => $q->whereIn('genres.id', $genreIds));
             })
-            ->with('artists')->latest('songs.published_at')->limit(6)->get();
+            ->with(['artists.image', 'cover', 'album.cover'])->latest('songs.published_at')->limit(6)->get();
 
         return view('songs.show', compact('song', 'linkableArtistIds', 'album', 'related'));
     }

@@ -53,7 +53,7 @@ class ViewStats
             return collect();
         }
 
-        $songs = Song::publiclyVisible()->with('artists')->whereIn('songs.id', $rows->pluck('item_id'))->get()->keyBy('id');
+        $songs = Song::publiclyVisible()->with(['artists.image', 'cover', 'album.cover'])->whereIn('songs.id', $rows->pluck('item_id'))->get()->keyBy('id');
 
         return $rows->map(fn ($row) => $songs[$row->item_id] ?? null)->filter()->take($limit)->values();
     }

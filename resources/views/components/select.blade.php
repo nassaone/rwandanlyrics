@@ -4,7 +4,7 @@
     <label for="{{ $name }}" class="block text-sm font-medium">{{ $label }}</label>
     <select id="{{ $name }}" name="{{ $name }}{{ $multiple ? '[]' : '' }}" @if ($multiple) multiple size="6" @endif
         @error($name) aria-invalid="true" aria-describedby="{{ $name }}-error" @enderror
-        {{ $attributes->class('mt-1 block w-full rounded-md border border-line bg-white px-3 py-2 text-base') }}>
+        {{ $attributes->class('mt-1 block w-full rounded-md border border-line bg-page px-3 py-2 text-base') }}>
         @if ($placeholder !== null)<option value="">{{ $placeholder }}</option>@endif
         @foreach ($options as $value => $text)
             <option value="{{ $value }}" @selected(in_array((string) $value, $current, true))>{{ $text }}</option>

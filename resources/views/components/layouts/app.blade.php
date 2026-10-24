@@ -1,4 +1,4 @@
-@props(['title' => null, 'description' => 'Discover Rwandan music, artists, albums and authorized lyrics.', 'robots' => 'index,follow', 'ogType' => 'website'])
+@props(['title' => null, 'description' => 'Read Rwandan lyrics: songs, artists and albums, with authorized lyrics only.', 'robots' => 'index,follow', 'ogType' => 'website', 'searchBand' => true])
 @php $pageDescription = trim($__env->yieldPushContent('seo_description')) ?: $description; @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -12,7 +12,9 @@
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-    <meta name="theme-color" content="#1b6b45">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#1b6b45" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0e1512" media="(prefers-color-scheme: dark)">
     <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:title" content="{{ $title ?? config('app.name') }}">
     <meta property="og:description" content="{{ $pageDescription }}">
@@ -27,9 +29,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col">
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-white">Skip to content</a>
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-page">Skip to content</a>
 
-    <header class="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur" x-data="{ open: false }" @keydown.escape.window="open = false">
+    <header class="sticky top-0 z-30 border-b border-line bg-page/95 backdrop-blur" x-data="{ open: false }" @keydown.escape.window="open = false">
         <div class="flex h-1" aria-hidden="true"><span class="flex-1 bg-accent-600"></span><span class="flex-1 bg-sun"></span><span class="flex-1 bg-sky"></span></div>
         <div class="mx-auto max-w-5xl px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
             <a href="{{ route('home') }}" class="font-bold text-xl tracking-tight">Rwandan<span class="text-accent-600">lyrics</span></a>
@@ -40,14 +42,16 @@
                 <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path x-show="!open" d="M4 6h16M4 12h16M4 18h16"/><path x-show="open" x-cloak d="M6 6l12 12M18 6L6 18"/></svg>
             </button>
         </div>
-        <nav x-show="open" x-cloak class="md:hidden border-t border-line bg-white px-4 py-3 text-base font-medium" aria-label="Mobile">
+        <nav x-show="open" x-cloak class="md:hidden border-t border-line bg-page px-4 py-3 text-base font-medium" aria-label="Mobile">
             <x-nav-links block />
         </nav>
     </header>
 
+    @if ($searchBand)
     <div class="border-t border-line bg-surface">
         <div class="mx-auto max-w-5xl px-4 sm:px-6 py-3"><x-search-form /></div>
     </div>
+    @endif
 
     <main id="main" class="flex-1 mx-auto w-full max-w-5xl px-4 sm:px-6 py-6 sm:py-10">
         @if (session('status'))
@@ -60,7 +64,7 @@
         <div class="mx-auto max-w-5xl px-4 sm:px-6 py-8 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
             <div>
                 <p class="font-bold text-ink text-base">Rwandan<span class="text-accent-600">lyrics</span></p>
-                <p class="mt-1 max-w-xs">Rwandan music, artists and authorized lyrics.</p>
+                <p class="mt-1 max-w-xs">Rwandan lyrics, artists and albums.</p>
                 <p class="mt-3">&copy; {{ date('Y') }} {{ config('app.name') }}</p>
             </div>
             <nav class="grid grid-cols-2 gap-x-8 gap-y-1 sm:grid-cols-2" aria-label="Footer">

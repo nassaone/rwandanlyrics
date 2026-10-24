@@ -1,10 +1,17 @@
-<x-layouts.app title="Rwandan music, artists and lyrics">
+<x-layouts.app title="Rwandan lyrics: songs, artists and albums" :search-band="false">
 @push('head')
     <x-json-ld :data="\App\Support\SeoSchema::website()" />
 @endpush
-    <section class="border-l-4 border-sun pl-4 sm:pl-6 py-1">
-        <h1>Rwandanlyrics</h1>
-        <p class="mt-2 max-w-xl text-lg text-muted">Discover Rwandan music, artists, albums and authorized lyrics.</p>
+    <section class="rounded-2xl bg-surface px-5 py-8 sm:px-10 sm:py-12">
+        <h1 class="text-4xl font-extrabold tracking-tight sm:text-6xl">Rwandan lyrics</h1>
+        <div class="mt-4 flex h-1.5 w-24 overflow-hidden rounded-full" aria-hidden="true"><span class="flex-1 bg-accent-600"></span><span class="flex-1 bg-sun"></span><span class="flex-1 bg-sky"></span></div>
+        <p class="mt-4 max-w-xl text-lg text-muted">Find the lyrics to Rwandan songs by artist, album and genre. Only authorized lyrics are published here.</p>
+        <div class="mt-6 max-w-xl"><x-search-form /></div>
+        <p class="mt-3 flex flex-wrap gap-x-6 text-sm font-medium">
+            <a href="{{ route('songs.index') }}" class="inline-flex min-h-11 items-center text-accent-600 hover:underline">Browse all lyrics</a>
+            <a href="{{ route('artists.index') }}" class="inline-flex min-h-11 items-center text-accent-600 hover:underline">Artists</a>
+            <a href="{{ route('genres.index') }}" class="inline-flex min-h-11 items-center text-accent-600 hover:underline">Genres</a>
+        </p>
     </section>
 
     @if ($latestSongs->isEmpty() && $artists->isEmpty() && $albums->isEmpty())

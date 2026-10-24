@@ -47,7 +47,7 @@ class SearchService
         $contains = '%'.self::escape($query).'%';
 
         return Song::publiclyVisible()
-            ->with('artists')
+            ->with(['artists.image', 'cover', 'album.cover'])
             ->where(function ($where) use ($contains) {
                 $where->whereRaw("songs.title LIKE ? ESCAPE '!'", [$contains])
                     ->orWhereHas('artists', function ($artist) use ($contains) {

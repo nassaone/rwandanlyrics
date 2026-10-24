@@ -11,6 +11,8 @@
   --color-accent-100: #dcefe4;
   --color-accent-600: #1b6b45;
   --color-accent-700: #14553a;
+  --color-page: #ffffff;
+  --color-on-accent: #ffffff;
   --color-sun: #fad201;
   --color-sky: #1fa0dc;
   --color-ink: #14201a;
@@ -19,9 +21,32 @@
   --color-surface: #f6f8f6;
 }
 
+:root { color-scheme: light dark; }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-page: #0e1512;
+    --color-surface: #151e19;
+    --color-ink: #e6eee8;
+    --color-muted: #9fb0a6;
+    --color-line: #27332d;
+    --color-accent-50: #122219;
+    --color-accent-100: #1b3526;
+    --color-accent-600: #4cc38a;
+    --color-accent-700: #8fe0b8;
+    --color-on-accent: #06150d;
+    --color-red-50: #2a1414;
+    --color-red-200: #6b2222;
+    --color-red-700: #fca5a5;
+    --color-red-800: #fecaca;
+    --color-green-50: #10261a;
+    --color-green-200: #245c3a;
+    --color-green-800: #bbf7d0;
+  }
+}
+
 @layer base {
   html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
-  body { @apply bg-white text-ink antialiased; font-size: 1rem; line-height: 1.6; }
+  body { @apply bg-page text-ink antialiased; font-size: 1rem; line-height: 1.6; }
   h1 { @apply font-bold tracking-tight; font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem); line-height: 1.15; }
   h2 { @apply font-semibold tracking-tight; font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.25; }
   h3 { @apply font-semibold; font-size: 1.0625rem; line-height: 1.35; }

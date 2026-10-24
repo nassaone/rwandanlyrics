@@ -20,7 +20,7 @@ class GenreController extends Controller
     {
         $genre = Genre::where('slug', $slug)->firstOrFail();
 
-        $songs = $genre->songs()->publiclyVisible()->with('artists')
+        $songs = $genre->songs()->publiclyVisible()->with(['artists.image', 'cover', 'album.cover'])
             ->latest('songs.published_at')->paginate(20)->withQueryString();
 
         return view('genres.show', compact('genre', 'songs'));

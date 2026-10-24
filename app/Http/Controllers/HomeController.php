@@ -13,7 +13,7 @@ class HomeController extends Controller
 {
     public function __invoke(): View
     {
-        $latestSongs = Song::publiclyVisible()->with('artists')->latest('songs.published_at')->limit(10)->get();
+        $latestSongs = Song::publiclyVisible()->with(['artists.image', 'cover', 'album.cover'])->latest('songs.published_at')->limit(10)->get();
 
         $artists = Artist::published()->with('image')
             ->latest('artists.published_at')->limit(8)->get();
