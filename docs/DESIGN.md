@@ -33,3 +33,12 @@ song-row (tap-area list row), card, badge, alert, field/select/textarea (min-h-1
 2. No new JS libraries; Alpine only for menus/toggles.
 3. Add no queries when restyling (query-count tests guard home and song pages).
 4. Check at 360px width before merging.
+
+## Dark mode
+- Same tokens, redefined under `prefers-color-scheme: dark` in `resources/css/app.css`. Use only token classes (`bg-page`, `text-ink`, `border-line`, `bg-surface`, `text-accent-600`, `text-on-accent`); never `bg-white`, `text-white` or fixed greys in views.
+- Manual override: a header button sets `data-theme="light|dark"` on `<html>` and stores it in localStorage. `public/theme-init.js` applies the saved choice before first paint (same-origin script, no inline JS).
+- Without a saved choice the site follows the device setting.
+- Accent in dark mode is lighter (`#4cc38a`); button text uses `text-on-accent` to keep contrast.
+
+## Thumbnails
+- `x-avatar` shows a media image or a first-letter placeholder. `x-song-row` uses the song cover, then the album cover, then the first artist's photo, and only if the controller eager-loaded them (`artists.image`, `cover`, `album.cover`). New song lists must eager-load these or they show letters.

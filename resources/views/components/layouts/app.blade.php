@@ -13,6 +13,7 @@
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <meta name="color-scheme" content="light dark">
+    <script src="{{ asset('theme-init.js') }}"></script>
     <meta name="theme-color" content="#1b6b45" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0e1512" media="(prefers-color-scheme: dark)">
     <meta property="og:site_name" content="{{ config('app.name') }}">
@@ -38,9 +39,15 @@
             <nav class="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Main">
                 <x-nav-links />
             </nav>
-            <button type="button" class="md:hidden inline-flex size-11 items-center justify-center rounded-lg -mr-2 hover:bg-surface" @click="open = !open" :aria-expanded="open" aria-label="Menu">
+            <div class="-mr-2 flex items-center">
+                <button type="button" onclick="rlToggleTheme()" class="inline-flex size-11 items-center justify-center rounded-lg hover:bg-surface" aria-label="Switch between light and dark theme" title="Switch theme">
+                    <svg class="icon-moon size-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+                    <svg class="icon-sun size-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                </button>
+                <button type="button" class="md:hidden inline-flex size-11 items-center justify-center rounded-lg hover:bg-surface" @click="open = !open" :aria-expanded="open" aria-label="Menu">
                 <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path x-show="!open" d="M4 6h16M4 12h16M4 18h16"/><path x-show="open" x-cloak d="M6 6l12 12M18 6L6 18"/></svg>
             </button>
+            </div>
         </div>
         <nav x-show="open" x-cloak class="md:hidden border-t border-line bg-page px-4 py-3 text-base font-medium" aria-label="Mobile">
             <x-nav-links block />

@@ -22,8 +22,10 @@
 }
 
 :root { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --color-page: #0e1512;
     --color-surface: #151e19;
     --color-ink: #e6eee8;
@@ -42,6 +44,33 @@
     --color-green-200: #245c3a;
     --color-green-800: #bbf7d0;
   }
+}
+:root[data-theme="dark"] {
+    --color-page: #0e1512;
+    --color-surface: #151e19;
+    --color-ink: #e6eee8;
+    --color-muted: #9fb0a6;
+    --color-line: #27332d;
+    --color-accent-50: #122219;
+    --color-accent-100: #1b3526;
+    --color-accent-600: #4cc38a;
+    --color-accent-700: #8fe0b8;
+    --color-on-accent: #06150d;
+    --color-red-50: #2a1414;
+    --color-red-200: #6b2222;
+    --color-red-700: #fca5a5;
+    --color-red-800: #fecaca;
+    --color-green-50: #10261a;
+    --color-green-200: #245c3a;
+    --color-green-800: #bbf7d0;
+}
+
+.icon-sun { display: none; }
+:root[data-theme="dark"] .icon-moon { display: none; }
+:root[data-theme="dark"] .icon-sun { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon-moon { display: none; }
+  :root:not([data-theme="light"]) .icon-sun { display: block; }
 }
 
 @layer base {
