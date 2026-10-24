@@ -9,7 +9,7 @@
     <x-breadcrumbs :items="['Home' => route('home'), $album->title => null]" />
 
     <x-media-image :media="$album->cover" class="mb-4 max-h-80 rounded-md" />
-    <h1 class="text-2xl font-semibold">{{ $album->title }}</h1>
+    <h1>{{ $album->title }}</h1>
     <p class="mt-1 text-muted">
         @foreach ($album->artists as $artist)
             @if (in_array($artist->id, $linkableArtistIds, true))
@@ -25,7 +25,7 @@
     @endif
 
     <section class="mt-8" aria-labelledby="tracks">
-        <h2 id="tracks" class="text-lg font-semibold">Tracklist</h2>
+        <h2 id="tracks" class="mt-1">Tracklist</h2>
         @if ($tracks->isEmpty())
             <div class="mt-2"><x-empty-state title="No lyrics published for this album yet" /></div>
         @else

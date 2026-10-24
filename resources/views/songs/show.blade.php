@@ -10,7 +10,7 @@
 
     <article>
         <x-media-image :media="$song->cover" class="mb-4 max-h-80 rounded-md" />
-    <h1 class="text-2xl font-semibold">{{ $song->title }}</h1>
+    <h1>{{ $song->title }}</h1>
 
         <p class="mt-1 text-muted">
             @foreach ($song->artists as $artist)
@@ -49,7 +49,7 @@
         <section class="mt-6" aria-labelledby="lyrics-heading">
             <h2 id="lyrics-heading" class="sr-only">Lyrics</h2>
             @if ($song->currentLyric)
-                <div class="lyrics text-lg">{{ $song->currentLyric->body }}</div>
+                <div class="lyrics mt-2 border-l-4 border-sun bg-surface px-5 py-6 sm:px-8">{{ $song->currentLyric->body }}</div>
             @else
                 <x-empty-state title="Lyrics are not available for this song" />
             @endif
@@ -70,7 +70,7 @@
 
     @if ($related->isNotEmpty())
         <section class="mt-10" aria-labelledby="related">
-            <h2 id="related" class="text-lg font-semibold">Related songs</h2>
+            <h2 id="related" class="mt-1">Related songs</h2>
             <ul class="mt-2">
                 @foreach ($related as $item)
                     <x-song-row :song="$item" />

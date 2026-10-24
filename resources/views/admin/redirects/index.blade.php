@@ -16,7 +16,7 @@
 
     <form method="GET" action="{{ route('admin.redirects.index') }}" class="mt-6 flex gap-2" role="search">
         <label for="q" class="sr-only">Search redirects</label>
-        <input id="q" name="q" type="search" value="{{ request('q') }}" placeholder="Search paths" class="min-w-0 flex-1 rounded-md border border-line px-3 py-2 text-base">
+        <input id="q" name="q" type="search" value="{{ request('q') }}" placeholder="Search paths" class="min-w-0 flex-1 min-h-11 rounded-lg border border-line px-3 py-2.5 text-base">
         <x-button type="submit" variant="secondary">Search</x-button>
     </form>
 

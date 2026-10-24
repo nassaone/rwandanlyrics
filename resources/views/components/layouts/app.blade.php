@@ -19,25 +19,29 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col">
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:p-3 focus:bg-white">Skip to content</a>
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-white">Skip to content</a>
 
-    <header class="border-b border-line bg-white" x-data="{ open: false }">
-        <div class="mx-auto max-w-5xl px-4 h-14 flex items-center justify-between gap-3">
-            <a href="{{ route('home') }}" class="font-bold text-lg tracking-tight">Rwandan<span class="text-accent-600">lyrics</span></a>
-            <nav class="hidden md:flex items-center gap-5 text-sm" aria-label="Main">
+    <header class="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur" x-data="{ open: false }" @keydown.escape.window="open = false">
+        <div class="flex h-1" aria-hidden="true"><span class="flex-1 bg-accent-600"></span><span class="flex-1 bg-sun"></span><span class="flex-1 bg-sky"></span></div>
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+            <a href="{{ route('home') }}" class="font-bold text-xl tracking-tight">Rwandan<span class="text-accent-600">lyrics</span></a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Main">
                 <x-nav-links />
             </nav>
-            <button type="button" class="md:hidden p-2 -mr-2" @click="open = !open" :aria-expanded="open" aria-label="Menu">
-                <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <button type="button" class="md:hidden inline-flex size-11 items-center justify-center rounded-lg -mr-2 hover:bg-surface" @click="open = !open" :aria-expanded="open" aria-label="Menu">
+                <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path x-show="!open" d="M4 6h16M4 12h16M4 18h16"/><path x-show="open" x-cloak d="M6 6l12 12M18 6L6 18"/></svg>
             </button>
         </div>
-        <nav x-show="open" x-cloak class="md:hidden border-t border-line px-4 py-2 text-sm" aria-label="Mobile">
+        <nav x-show="open" x-cloak class="md:hidden border-t border-line bg-white px-4 py-3 text-base font-medium" aria-label="Mobile">
             <x-nav-links block />
         </nav>
-        <div class="mx-auto max-w-5xl px-4 pb-3"><x-search-form /></div>
     </header>
 
-    <main id="main" class="flex-1 mx-auto w-full max-w-5xl px-4 py-6">
+    <div class="border-t border-line bg-surface">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 py-3"><x-search-form /></div>
+    </div>
+
+    <main id="main" class="flex-1 mx-auto w-full max-w-5xl px-4 sm:px-6 py-6 sm:py-10">
         @if (session('status'))
             <x-alert type="success" class="mb-4">{{ session('status') }}</x-alert>
         @endif
@@ -45,16 +49,21 @@
     </main>
 
     <footer class="border-t border-line bg-surface text-sm text-muted">
-        <div class="mx-auto max-w-5xl px-4 py-6 flex flex-wrap gap-x-5 gap-y-2 justify-between">
-            <span>&copy; {{ date('Y') }} {{ config('app.name') }}</span>
-            <nav class="flex gap-4" aria-label="Footer">
-                <a href="{{ route('songs.index') }}" class="hover:text-accent-600">Lyrics</a>
-                <a href="{{ route('artists.index') }}" class="hover:text-accent-600">Artists</a>
-                <a href="{{ route('genres.index') }}" class="hover:text-accent-600">Genres</a>
-                <a href="{{ route('legal.privacy') }}" class="hover:text-accent-600">Privacy</a>
-                <a href="{{ route('legal.copyright') }}" class="hover:text-accent-600">Copyright policy</a>
-                <a href="{{ route('legal.takedown') }}" class="hover:text-accent-600">Takedown requests</a>
-                <a href="{{ route('legal.corrections') }}" class="hover:text-accent-600">Report an error</a>
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 py-8 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
+            <div>
+                <p class="font-bold text-ink text-base">Rwandan<span class="text-accent-600">lyrics</span></p>
+                <p class="mt-1 max-w-xs">Rwandan music, artists and authorized lyrics.</p>
+                <p class="mt-3">&copy; {{ date('Y') }} {{ config('app.name') }}</p>
+            </div>
+            <nav class="grid grid-cols-2 gap-x-8 gap-y-1 sm:grid-cols-2" aria-label="Footer">
+                <a href="{{ route('songs.index') }}" class="py-1.5 hover:text-accent-600">Lyrics</a>
+                <a href="{{ route('legal.privacy') }}" class="py-1.5 hover:text-accent-600">Privacy</a>
+                <a href="{{ route('artists.index') }}" class="py-1.5 hover:text-accent-600">Artists</a>
+                <a href="{{ route('legal.copyright') }}" class="py-1.5 hover:text-accent-600">Copyright policy</a>
+                <a href="{{ route('genres.index') }}" class="py-1.5 hover:text-accent-600">Genres</a>
+                <a href="{{ route('legal.takedown') }}" class="py-1.5 hover:text-accent-600">Takedown requests</a>
+                <span class="hidden sm:block"></span>
+                <a href="{{ route('legal.corrections') }}" class="py-1.5 hover:text-accent-600">Report an error</a>
             </nav>
         </div>
     </footer>

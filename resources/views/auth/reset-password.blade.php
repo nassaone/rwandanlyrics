@@ -1,6 +1,6 @@
 <x-layouts.app title="Choose a new password" robots="noindex,nofollow">
-    <div class="mx-auto max-w-sm">
-        <h1 class="text-2xl font-semibold">Choose a new password</h1>
+    <div class="mx-auto max-w-sm rounded-xl border border-line p-5 sm:p-8">
+        <h1>Choose a new password</h1>
         <form method="POST" action="{{ route('password.store') }}" class="mt-4 space-y-4">
             @csrf
             <input type="hidden" name="token" value="{{ $token }}">

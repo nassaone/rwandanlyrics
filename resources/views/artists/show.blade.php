@@ -9,7 +9,7 @@
 
     <x-media-image :media="$artist->banner" class="mb-4 w-full rounded-md" />
     <x-media-image :media="$artist->image" class="mb-4 size-32 rounded-full object-cover" />
-    <h1 class="text-2xl font-semibold">{{ $artist->name }}</h1>
+    <h1>{{ $artist->name }}</h1>
 
     @if ($artist->genres->isNotEmpty())
         <ul class="mt-3 flex flex-wrap gap-2">
@@ -25,7 +25,7 @@
 
     @if ($albums->isNotEmpty())
         <section class="mt-8" aria-labelledby="albums">
-            <h2 id="albums" class="text-lg font-semibold">Albums</h2>
+            <h2 id="albums" class="mt-1">Albums</h2>
             <ul class="mt-2">
                 @foreach ($albums as $album)
                     <li class="border-b border-line py-3 last:border-0">
@@ -38,7 +38,7 @@
     @endif
 
     <section class="mt-8" aria-labelledby="songs">
-        <h2 id="songs" class="text-lg font-semibold">Lyrics</h2>
+        <h2 id="songs" class="mt-1">Lyrics</h2>
         @if ($songs->isEmpty())
             <div class="mt-2"><x-empty-state title="No lyrics published for this artist yet" /></div>
         @else

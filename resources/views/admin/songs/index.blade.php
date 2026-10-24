@@ -6,7 +6,7 @@
 
     <form method="GET" class="mt-4 flex flex-wrap gap-2" role="search">
         <label class="sr-only" for="q">Search titles</label>
-        <input id="q" name="q" value="{{ request('q') }}" placeholder="Search titles" class="min-w-0 flex-1 rounded-md border border-line px-3 py-2 text-base">
+        <input id="q" name="q" value="{{ request('q') }}" placeholder="Search titles" class="min-w-0 flex-1 min-h-11 rounded-lg border border-line px-3 py-2.5 text-base">
         <label class="sr-only" for="status">Status</label>
         <select id="status" name="status" class="rounded-md border border-line bg-white px-3 py-2 text-base">
             <option value="">Any status</option>

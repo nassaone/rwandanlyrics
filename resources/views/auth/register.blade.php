@@ -1,6 +1,6 @@
 <x-layouts.app title="Create an account" robots="noindex,nofollow">
-    <div class="mx-auto max-w-sm">
-        <h1 class="text-2xl font-semibold">Create an account</h1>
+    <div class="mx-auto max-w-sm rounded-xl border border-line p-5 sm:p-8">
+        <h1>Create an account</h1>
         <form method="POST" action="{{ route('register') }}" class="mt-4 space-y-4">
             @csrf
             <x-field name="name" label="Name" autocomplete="name" required autofocus />

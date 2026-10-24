@@ -1,5 +1,5 @@
 <x-layouts.app :title="$searched ? 'Search results for '.$q : 'Search'" robots="noindex,follow">
-    <h1 class="text-2xl font-semibold">{{ $searched ? 'Results for "'.$q.'"' : 'Search' }}</h1>
+    <h1>{{ $searched ? 'Results for "'.$q.'"' : 'Search' }}</h1>
 
     @if (! $searched)
         <p class="mt-2 text-muted">
@@ -20,10 +20,10 @@
 
         @if ($artists->isNotEmpty())
             <section class="mt-8" aria-labelledby="artists-results">
-                <h2 id="artists-results" class="text-lg font-semibold">Artists</h2>
+                <h2 id="artists-results" class="mt-1">Artists</h2>
                 <ul class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
                     @foreach ($artists as $artist)
-                        <li><a href="{{ route('artists.show', $artist->slug) }}" class="block rounded-md border border-line p-3 text-sm font-medium hover:border-accent-600">{{ $artist->name }}</a></li>
+                        <li><a href="{{ route('artists.show', $artist->slug) }}" class="block rounded-lg border border-line p-4 font-medium leading-snug hover:border-accent-600 hover:bg-accent-50">{{ $artist->name }}</a></li>
                     @endforeach
                 </ul>
             </section>
@@ -31,7 +31,7 @@
 
         @if ($albums->isNotEmpty())
             <section class="mt-8" aria-labelledby="albums-results">
-                <h2 id="albums-results" class="text-lg font-semibold">Albums</h2>
+                <h2 id="albums-results" class="mt-1">Albums</h2>
                 <ul class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
                     @foreach ($albums as $album)
                         <li class="rounded-md border border-line p-3">
@@ -45,7 +45,7 @@
 
         @if ($songs->total() > 0)
             <section class="mt-8" aria-labelledby="songs-results">
-                <h2 id="songs-results" class="text-lg font-semibold">Songs ({{ $songs->total() }})</h2>
+                <h2 id="songs-results" class="mt-1">Songs ({{ $songs->total() }})</h2>
                 <ul class="mt-2">
                     @foreach ($songs as $song)
                         <x-song-row :song="$song" />

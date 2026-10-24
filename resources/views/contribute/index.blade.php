@@ -1,5 +1,5 @@
 <x-layouts.app title="My submissions" robots="noindex,nofollow">
-    <h1 class="text-2xl font-semibold">My submissions</h1>
+    <h1>My submissions</h1>
     <p class="mt-1 text-sm text-muted">Suggest new songs or corrections. An editor reviews everything before it is published.</p>
     @if (session('status')) <x-alert type="success" class="mt-4">{{ session('status') }}</x-alert> @endif
     <p class="mt-4"><x-link-button href="{{ route('contribute.create') }}">Submit a song</x-link-button></p>
