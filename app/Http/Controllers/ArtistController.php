@@ -9,7 +9,7 @@ class ArtistController extends Controller
 {
     public function index(): View
     {
-        $artists = Artist::published()
+        $artists = Artist::published()->with('image')
             ->orderBy('artists.name')->paginate(24)->withQueryString();
 
         return view('artists.index', compact('artists'));

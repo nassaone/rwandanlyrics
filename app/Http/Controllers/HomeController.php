@@ -15,11 +15,11 @@ class HomeController extends Controller
     {
         $latestSongs = Song::publiclyVisible()->with('artists')->latest('songs.published_at')->limit(10)->get();
 
-        $artists = Artist::published()
+        $artists = Artist::published()->with('image')
             ->latest('artists.published_at')->limit(8)->get();
 
         $albums = Album::published()
-            ->with('artists')->latest('albums.published_at')->limit(6)->get();
+            ->with('artists', 'cover')->latest('albums.published_at')->limit(6)->get();
 
         $genres = Genre::whereHas('songs', fn ($q) => $q->publiclyVisible())->orderBy('name')->get();
 
