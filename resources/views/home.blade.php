@@ -16,7 +16,7 @@
     @if ($popularSongs->isNotEmpty())
         <section class="mt-10" aria-labelledby="popular">
             <h2 id="popular" class="mt-1">Popular this week</h2>
-            <ul class="mt-2">
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
                 @foreach ($popularSongs as $song)
                     <x-song-row :song="$song" />
                 @endforeach
@@ -28,7 +28,7 @@
     @if ($latestSongs->isNotEmpty())
         <section class="mt-10" aria-labelledby="latest">
             <h2 id="latest" class="mt-1">Latest lyrics</h2>
-            <ul class="mt-2">
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
                 @foreach ($latestSongs as $song)
                     <x-song-row :song="$song" />
                 @endforeach
@@ -52,7 +52,7 @@
     @if ($albums->isNotEmpty())
         <section class="mt-10" aria-labelledby="albums">
             <h2 id="albums" class="mt-1">Albums</h2>
-            <ul class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <ul class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($albums as $album)
                     <li class="flex items-center gap-4 rounded-lg border border-line p-3 hover:border-accent-600"><x-avatar :media="$album->cover" :name="$album->title" shape="square" size="size-16" /><div class="min-w-0">
                         <a href="{{ route('albums.show', $album->slug) }}" class="font-medium hover:text-accent-600">{{ $album->title }}</a>

@@ -71,7 +71,7 @@
     @if ($related->isNotEmpty())
         <section class="mt-10" aria-labelledby="related">
             <h2 id="related" class="mt-1">Related songs</h2>
-            <ul class="mt-2">
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
                 @foreach ($related as $item)
                     <x-song-row :song="$item" />
                 @endforeach

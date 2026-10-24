@@ -4,7 +4,7 @@
     @if ($songs->isEmpty())
         <div class="mt-6"><x-empty-state title="No lyrics published yet" /></div>
     @else
-        <ul class="mt-4">
+        <ul class="mt-4 md:grid md:grid-cols-2 md:gap-x-10">
             @foreach ($songs as $song)
                 <x-song-row :song="$song" />
             @endforeach

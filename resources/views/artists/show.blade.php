@@ -26,7 +26,7 @@
     @if ($albums->isNotEmpty())
         <section class="mt-8" aria-labelledby="albums">
             <h2 id="albums" class="mt-1">Albums</h2>
-            <ul class="mt-2">
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
                 @foreach ($albums as $album)
                     <li class="border-b border-line py-3 last:border-0">
                         <a href="{{ route('albums.show', $album->slug) }}" class="font-medium hover:text-accent-600">{{ $album->title }}</a>
@@ -42,7 +42,7 @@
         @if ($songs->isEmpty())
             <div class="mt-2"><x-empty-state title="No lyrics published for this artist yet" /></div>
         @else
-            <ul class="mt-2">
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
                 @foreach ($songs as $song)
                     <x-song-row :song="$song" />
                 @endforeach
