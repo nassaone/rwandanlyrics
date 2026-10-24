@@ -58,7 +58,7 @@
         <div class="mt-6" x-data>
             <x-button variant="secondary" @click="navigator.share ? navigator.share({ title: document.title, url: location.href }) : navigator.clipboard.writeText(location.href)">Share</x-button>
         </div>
-    <footer class="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-4 text-sm text-muted">
+    <footer class="mt-8 flex flex-wrap gap-x-6 gap-y-1 border-t border-line pt-3 text-sm text-muted [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center">
             <a href="{{ route('legal.corrections') }}" class="hover:text-accent-600">Report an error</a>
             @can('create', \App\Models\Submission::class)
                 <a href="{{ route('contribute.create', ['song' => $song->slug]) }}" class="hover:text-accent-600">Suggest a correction</a>

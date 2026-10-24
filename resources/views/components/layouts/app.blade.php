@@ -9,12 +9,20 @@
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="robots" content="{{ $robots }}">
     <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#1b6b45">
     <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:title" content="{{ $title ?? config('app.name') }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:type" content="{{ $ogType }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="{{ asset('og-default.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ asset('og-default.png') }}">
     @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
