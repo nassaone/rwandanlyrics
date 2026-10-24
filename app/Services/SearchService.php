@@ -67,6 +67,7 @@ class SearchService
         $contains = '%'.self::escape($query).'%';
 
         return Artist::published()
+            ->with('image')
             ->where(function ($where) use ($contains) {
                 $where->whereRaw("artists.name LIKE ? ESCAPE '!'", [$contains])
                     ->orWhereHas('aliases', fn ($alias) => $alias->whereRaw("artist_aliases.alias LIKE ? ESCAPE '!'", [$contains]));
@@ -82,7 +83,7 @@ class SearchService
         $contains = '%'.self::escape($query).'%';
 
         return Album::published()
-            ->with('artists')
+            ->with(['artists', 'cover'])
             ->where(function ($where) use ($contains) {
                 $where->whereRaw("albums.title LIKE ? ESCAPE '!'", [$contains])
                     ->orWhereHas('artists', fn ($artist) => $artist->whereRaw("artists.name LIKE ? ESCAPE '!'", [$contains]));

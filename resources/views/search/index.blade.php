@@ -23,7 +23,7 @@
                 <h2 id="artists-results" class="mt-1">Artists</h2>
                 <ul class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
                     @foreach ($artists as $artist)
-                        <li><a href="{{ route('artists.show', $artist->slug) }}" class="block rounded-lg border border-line p-4 font-medium leading-snug hover:border-accent-600 hover:bg-accent-50">{{ $artist->name }}</a></li>
+                        <li><a href="{{ route('artists.show', $artist->slug) }}" class="flex items-center gap-3 rounded-lg border border-line p-3 font-medium leading-snug hover:border-accent-600 hover:bg-accent-50"><x-avatar :media="$artist->image" :name="$artist->name" /><span class="min-w-0">{{ $artist->name }}</span></a></li>
                     @endforeach
                 </ul>
             </section>
@@ -34,9 +34,9 @@
                 <h2 id="albums-results" class="mt-1">Albums</h2>
                 <ul class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
                     @foreach ($albums as $album)
-                        <li class="rounded-md border border-line p-3">
+                        <li class="flex items-center gap-4 rounded-lg border border-line p-3 hover:border-accent-600"><x-avatar :media="$album->cover" :name="$album->title" shape="square" size="size-16" /><div class="min-w-0">
                             <a href="{{ route('albums.show', $album->slug) }}" class="font-medium hover:text-accent-600">{{ $album->title }}</a>
-                            <p class="text-sm text-muted">{{ $album->artists->pluck('name')->join(', ') }}</p>
+                            <p class="text-sm text-muted">{{ $album->artists->pluck('name')->join(', ') }}</p></div>
                         </li>
                     @endforeach
                 </ul>
