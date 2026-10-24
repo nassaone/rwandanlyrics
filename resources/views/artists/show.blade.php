@@ -7,20 +7,32 @@
 @endpush
     <x-breadcrumbs :items="['Home' => route('home'), 'Artists' => route('artists.index'), $artist->name => null]" />
 
-    <x-media-image :media="$artist->banner" class="mb-4 w-full rounded-md" />
-    <x-media-image :media="$artist->image" class="mb-4 size-32 rounded-full object-cover" />
-    <h1>{{ $artist->name }}</h1>
-
-    @if ($artist->genres->isNotEmpty())
+    <header class="overflow-hidden rounded-2xl border border-line">
+        @if ($artist->banner)
+            <img src="{{ $artist->banner->url() }}" alt="" class="h-40 w-full object-cover sm:h-56">
+        @else
+            <div class="h-24 bg-accent-100 sm:h-32" aria-hidden="true"></div>
+        @endif
+        <div class="flex flex-col gap-4 px-5 pb-6 sm:flex-row sm:items-end sm:px-8">
+            <div class="-mt-12 shrink-0 sm:-mt-16">
+                <x-avatar :media="$artist->image" :name="$artist->name" size="size-24 sm:size-32 text-4xl ring-4 ring-page" />
+            </div>
+            <div class="min-w-0">
+                <h1>{{ $artist->name }}</h1>
+                <p class="mt-1 text-sm text-muted">{{ $songs->total() }} {{ \Illuminate\Support\Str::plural('lyric', $songs->total()) }}, {{ $albums->count() }} {{ \Illuminate\Support\Str::plural('album', $albums->count()) }}</p>
+                @if ($artist->genres->isNotEmpty())
         <ul class="mt-3 flex flex-wrap gap-2">
             @foreach ($artist->genres as $genre)
                 <li><a href="{{ route('genres.show', $genre->slug) }}"><x-badge>{{ $genre->name }}</x-badge></a></li>
             @endforeach
         </ul>
     @endif
+            </div>
+        </div>
+    </header>
 
     @if ($artist->bio)
-        <p class="mt-4 whitespace-pre-line">{{ $artist->bio }}</p>
+        <p class="mt-6 max-w-2xl whitespace-pre-line">{{ $artist->bio }}</p>
     @endif
 
     @if ($albums->isNotEmpty())
