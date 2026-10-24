@@ -42,3 +42,25 @@ Role changes by this command are not yet written to an audit log (Phase 5).
 - Alt text is required for every uploaded image.
 - User management (role changes, suspension, deletion) is admin-only, audited, and blocked for the admin's own account. Suspending a user clears their remember token and database sessions.
 - Manual redirects must be local paths, cannot target `/admin`, and cannot create loops.
+
+## Phase 11 audit (2026-10-24)
+
+### Checked and found fine
+- Every route that changes data is behind login or a rate limit (login, register, forgot/reset password: 5/min; submissions: 20/hour; search: 60/min). No admin, contribute or account page is reachable without login.
+- All POST forms carry CSRF tokens. All images have alt text. Pages set a language. The only unescaped output is the policy Markdown (HTML input stripped, unsafe links disallowed) and JSON-LD (encoded so it cannot close the script tag).
+- All raw SQL is parameterized or static. No model uses `$guarded = []`; role and suspension fields are not mass assignable.
+- Key queries use indexes (checked with query plans on SQLite).
+
+### Fixed in Phase 11
+- Added security headers on every response: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, and a partial `Content-Security-Policy` (base-uri, form-action, frame-ancestors, object-src). `Strict-Transport-Security` (1 year, no subdomains/preload) only in production over https.
+- Turned off the framework's local-disk file route (`PUT /storage/{path}`), which had no rate limit and is unused.
+- Added missing reverse-lookup indexes (artist to songs/albums, genre to songs/artists, songs.album_id, songs.language_id, lyrics current revision). Artist pages were scanning `song_artist`.
+- Test that public pages run the same number of queries with 3 or 23 songs (guards against N+1).
+- Launch checklist (`rwandanlyrics:preflight`) now also requires HTTPS-only session cookies and a real mail driver (password reset needs it).
+- Removed the unused Laravel welcome page and the old `/contributor` placeholder.
+
+### Known gaps (deliberate, not fixed)
+- No script/style CSP yet: Alpine needs `unsafe-eval` and several forms use inline `confirm()` handlers. A strict CSP needs the Alpine CSP build and moving those handlers into Alpine, then a report-only trial.
+- No two-factor login for staff, no email verification, and login lockout is rate limiting only.
+- No caching layer, so nothing to invalidate yet. Add caching only together with invalidation on publish, unpublish and rights changes.
+- Dependency audits (`composer audit`, `npm audit`) are a manual step; run them before each release.

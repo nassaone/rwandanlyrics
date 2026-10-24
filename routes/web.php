@@ -20,7 +20,6 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ContributionController;
-use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalPageController;
@@ -71,8 +70,6 @@ Route::middleware(['auth', EnsureUserIsActive::class])->group(function () {
     Route::put('/account/password', [AccountController::class, 'updatePassword'])->name('account.password');
     Route::delete('/account', [AccountController::class, 'destroy'])->name('account.destroy');
 
-    Route::get('/contributor', ContributorController::class)
-        ->middleware(EnsureRole::class.':contributor')->name('contributor.dashboard');
 });
 
 Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor'])

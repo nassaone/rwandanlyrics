@@ -15,7 +15,7 @@ Last updated: 2026-10-20
 | 8 | SEO and indexing | **Complete** (sitemaps, robots, JSON-LD, noindex for thin pages) |
 | 9 | Rights, privacy, governance | **Complete** (policy pages, takedown runbook, preflight; see open items) |
 | 10 | Analytics and monetization readiness | **Complete for first-party view counting** (ads and outbound-link tracking deferred by choice) |
-| 11 | Performance, accessibility, security audit | Not started |
+| 11 | Performance, accessibility, security audit | **Complete** (see docs/SECURITY.md; strict CSP and hand accessibility checks remain) |
 | 12 | Deployment and launch | Not started |
 
 ## Environment (Codespace, audited 2026-10-20)
@@ -192,3 +192,13 @@ Review indexes and N+1 queries, caching with correct invalidation, headers (CSP,
 
 ### Next: Phase 11 — Performance, accessibility and security audit
 Review indexes and N+1 queries, caching with correct invalidation, headers (CSP, HSTS), rate limits, upload and auth hardening, accessibility pass, remove the old /contributor placeholder, dependency audit.
+
+## Phase 11 — Audit (2026-10-24)
+- Audited: write routes (all behind login or rate limits), forms (CSRF), views (alt, lang, unescaped output), raw SQL, mass assignment, query plans, dependencies.
+- Fixed: security headers on every response (HSTS only in production over https), framework local-disk file route disabled, missing reverse-lookup indexes (artist page scanned `song_artist`), launch checklist now also needs HTTPS-only cookies and a real mail driver, removed the unused welcome page and the old `/contributor` placeholder.
+- New tests: security headers, HSTS rules, and an N+1 guard (public pages run the same query count with 3 or 23 songs).
+- Tests: 172 passing (848 assertions), verified by the owner's run.
+- Deliberately not done: script/style CSP (needs Alpine CSP build and moving inline handlers), staff two-factor login, email verification, caching (add only with invalidation). Hand accessibility checks are listed in `docs/ACCESSIBILITY.md`.
+
+### Next: Phase 12 — Deployment and launch
+MySQL production setup and migration testing, environment variables, build and cache steps, scheduler and queue worker, backups, https and www redirect, final launch checklist.

@@ -15,7 +15,7 @@ class AccessControlTest extends TestCase
     public static function matrix(): array
     {
         $levels = ['user' => 1, 'contributor' => 2, 'editor' => 3, 'admin' => 4, 'super_admin' => 5];
-        $areas = ['/admin' => 3, '/contributor' => 2, '/account' => 1];
+        $areas = ['/admin' => 3, '/contribute' => 2, '/account' => 1];
         $cases = [];
 
         foreach ($areas as $path => $minimum) {

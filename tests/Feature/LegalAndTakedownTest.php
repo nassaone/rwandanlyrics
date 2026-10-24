@@ -104,7 +104,7 @@ class LegalAndTakedownTest extends TestCase
     public function test_preflight_passes_with_launch_ready_settings(): void
     {
         config([
-            'app.env' => 'production', 'app.debug' => false, 'app.url' => 'https://rwandanlyrics.example',
+            'app.env' => 'production', 'app.debug' => false, 'session.secure' => true, 'mail.default' => 'smtp', 'app.url' => 'https://rwandanlyrics.example',
             'rwandanlyrics.contact' => ['copyright' => 'rights@example.org', 'corrections' => 'fixes@example.org', 'privacy' => 'privacy@example.org'],
         ]);
 

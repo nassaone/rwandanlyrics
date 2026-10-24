@@ -18,6 +18,8 @@ class Preflight extends Command
             'APP_ENV is production' => config('app.env') === 'production',
             'APP_DEBUG is off' => ! config('app.debug'),
             'APP_URL uses https and is not localhost' => str_starts_with($url, 'https://') && ! str_contains($url, 'localhost'),
+            'Session cookies are HTTPS-only (SESSION_SECURE_COOKIE=true)' => config('session.secure') === true,
+            'Mail is configured, not log or array (password reset needs it)' => ! in_array(config('mail.default'), ['log', 'array'], true),
             'Copyright contact email is set (CONTACT_COPYRIGHT_EMAIL)' => $this->realEmail(config('rwandanlyrics.contact.copyright')),
             'Corrections contact email is set (CONTACT_CORRECTIONS_EMAIL)' => $this->realEmail(config('rwandanlyrics.contact.corrections')),
             'Privacy contact email is set (CONTACT_PRIVACY_EMAIL)' => $this->realEmail(config('rwandanlyrics.contact.privacy')),
