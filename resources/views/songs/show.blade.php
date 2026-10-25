@@ -42,13 +42,13 @@
                         <template x-if="playing">
                             <iframe class="absolute inset-0 size-full" src="{{ \App\Support\YouTube::embedUrl($song->youtube_id) }}" title="{{ $song->title }} on YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
                         </template>
-                        <div x-show="! playing" class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center">
-                            <button type="button" @click="playing = true" class="inline-flex min-h-11 items-center gap-2 rounded-full bg-accent-600 px-5 py-2 font-medium text-on-accent hover:bg-accent-700">
-                                <svg class="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                                Watch the video
-                            </button>
-                            <p class="max-w-xs text-sm text-muted">Plays from YouTube. Nothing is loaded from YouTube until you press play.</p>
-                        </div>
+                        <button type="button" x-show="! playing" @click="playing = true" class="group absolute inset-0 size-full" aria-label="Play video: {{ $song->title }}">
+                            <img src="https://i.ytimg.com/vi/{{ $song->youtube_id }}/hqdefault.jpg" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="size-full object-cover">
+                            <span class="absolute inset-0 bg-black/25 transition group-hover:bg-black/10"></span>
+                            <span class="absolute left-1/2 top-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent-600 text-on-accent shadow-lg transition group-hover:scale-105 group-focus-visible:ring-4 group-focus-visible:ring-sun">
+                                <svg class="ml-1 size-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </span>
+                        </button>
                     </div>
                     <p class="mt-2 text-sm"><a href="{{ \App\Support\YouTube::watchUrl($song->youtube_id) }}" target="_blank" rel="noopener noreferrer" class="text-accent-600 hover:underline">Open on YouTube</a></p>
                 </section>
