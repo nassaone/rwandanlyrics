@@ -1,6 +1,7 @@
 <x-layouts.app title="Lyrics" description="Browse the latest Rwandan song lyrics on Rwandanlyrics.">
     <x-breadcrumbs :items="['Home' => route('home'), 'Lyrics' => null]" />
     <h1>Lyrics</h1>
+    <x-ad-slot name="list_top" />
     @if ($songs->isEmpty())
         <div class="mt-6"><x-empty-state title="No lyrics published yet" /></div>
     @else

@@ -44,6 +44,8 @@
         </section>
     @endif
 
+    <x-ad-slot name="home_middle" />
+
     @if ($artists->isNotEmpty())
         <section class="mt-10" aria-labelledby="artists">
             <h2 id="artists" class="mt-1">Artists</h2>

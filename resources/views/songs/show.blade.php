@@ -46,6 +46,8 @@
             <p class="mt-4 whitespace-pre-line text-muted">{{ $song->description }}</p>
         @endif
 
+        <x-ad-slot name="song_top" />
+
         <section class="mt-6" aria-labelledby="lyrics-heading">
             <h2 id="lyrics-heading" class="sr-only">Lyrics</h2>
             @if ($song->currentLyric)
@@ -54,6 +56,8 @@
                 <x-empty-state title="Lyrics are not available for this song" />
             @endif
         </section>
+
+        <x-ad-slot name="song_bottom" />
 
         <div class="mt-6" x-data>
             <x-button variant="secondary" @click="navigator.share ? navigator.share({ title: document.title, url: location.href }) : navigator.clipboard.writeText(location.href)">Share</x-button>

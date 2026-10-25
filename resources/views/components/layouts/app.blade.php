@@ -27,10 +27,15 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="{{ asset('og-default.png') }}">
     @stack('head')
+    <x-site-code position="head" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col">
+    <x-site-code position="body_start" />
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-page">Skip to content</a>
+    @if ($banner = app(\App\Services\SettingsService::class)->value('maintenance_banner'))
+        <div role="status" class="bg-sun px-4 py-2 text-center text-sm font-medium text-on-sun">{{ $banner }}</div>
+    @endif
 
     <header class="sticky top-0 z-30 border-b border-line bg-page/95 backdrop-blur" x-data="{ open: false }" @keydown.escape.window="open = false">
         <div class="flex h-1" aria-hidden="true"><span class="flex-1 bg-accent-600"></span><span class="flex-1 bg-sun"></span><span class="flex-1 bg-sky"></span></div>
@@ -73,6 +78,17 @@
                 <p class="font-bold text-ink text-base">Rwandan<span class="text-accent-600">lyrics</span></p>
                 <p class="mt-1 max-w-xs">{{ config('rwandanlyrics.tagline', 'Rwandan lyrics, artists and albums.') }}</p>
                 <p class="mt-3">&copy; {{ date('Y') }} {{ config('app.name') }}</p>
+                @php
+                    $social = ['facebook' => 'Facebook', 'instagram' => 'Instagram', 'x' => 'X', 'youtube' => 'YouTube', 'tiktok' => 'TikTok', 'whatsapp' => 'WhatsApp'];
+                    $settingsSvc = app(\App\Services\SettingsService::class);
+                @endphp
+                <ul class="mt-2 flex flex-wrap gap-x-4">
+                    @foreach ($social as $k => $label)
+                        @if ($url = $settingsSvc->value('social_'.$k))
+                            <li><a href="{{ $url }}" rel="noopener noreferrer me" class="inline-flex min-h-11 items-center hover:text-accent-600">{{ $label }}</a></li>
+                        @endif
+                    @endforeach
+                </ul>
             </div>
             <nav class="grid grid-cols-2 gap-x-8 gap-y-1 sm:grid-cols-2" aria-label="Footer">
                 <a href="{{ route('songs.index') }}" class="py-1.5 hover:text-accent-600">Lyrics</a>
@@ -86,5 +102,6 @@
             </nav>
         </div>
     </footer>
+    <x-site-code position="body_end" />
 </body>
 </html>

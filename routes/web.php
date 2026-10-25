@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SongController as AdminSongController;
 use App\Http\Controllers\Admin\SubmissionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdsTxtController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\Auth\LoginController;
@@ -143,3 +144,5 @@ Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':super_
         Route::get('settings/{group}', [SettingsController::class, 'show'])->name('settings.show');
         Route::put('settings/{group}', [SettingsController::class, 'update'])->name('settings.update');
     });
+
+Route::get('/ads.txt', AdsTxtController::class)->name('ads-txt');
