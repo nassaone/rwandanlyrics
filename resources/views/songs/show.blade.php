@@ -45,8 +45,8 @@
                         <button type="button" x-show="! playing" @click="playing = true" class="group absolute inset-0 size-full" aria-label="Play video: {{ $song->title }}">
                             <img src="https://i.ytimg.com/vi/{{ $song->youtube_id }}/hqdefault.jpg" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="size-full object-cover">
                             <span class="absolute inset-0 bg-black/25 transition group-hover:bg-black/10"></span>
-                            <span class="absolute left-1/2 top-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent-600 text-on-accent shadow-lg transition group-hover:scale-105 group-focus-visible:ring-4 group-focus-visible:ring-sun">
-                                <svg class="ml-1 size-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            <span class="absolute left-1/2 top-1/2 flex size-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent-600 text-on-accent shadow-2xl ring-4 ring-white/70 transition group-hover:scale-105 group-focus-visible:ring-4 group-focus-visible:ring-sun">
+                                <svg class="ml-1 size-10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
                             </span>
                         </button>
                     </div>
