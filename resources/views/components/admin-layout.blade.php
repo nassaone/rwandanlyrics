@@ -16,6 +16,9 @@
         $items['Users'] = ['admin.users.index', 'admin.users.*'];
         $items['Activity'] = ['admin.audit.index', 'admin.audit.*'];
     }
+    if (auth()->user()->atLeast(\App\Enums\Role::SuperAdmin)) {
+        $items['Settings'] = ['admin.settings.index', 'admin.settings.*'];
+    }
 @endphp
 <x-layouts.app :title="$title" robots="noindex,nofollow">
     <nav class="-mx-4 mb-6 flex gap-5 overflow-x-auto border-b border-line px-4 text-sm" aria-label="Admin">

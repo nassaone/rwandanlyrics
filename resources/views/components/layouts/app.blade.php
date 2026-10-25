@@ -1,5 +1,5 @@
-@props(['title' => null, 'description' => 'Read Rwandan lyrics: songs, artists and albums, with authorized lyrics only.', 'robots' => 'index,follow', 'ogType' => 'website', 'searchBand' => true])
-@php $pageDescription = trim($__env->yieldPushContent('seo_description')) ?: $description; @endphp
+@props(['title' => null, 'description' => null, 'robots' => 'index,follow', 'ogType' => 'website', 'searchBand' => true])
+@php $pageDescription = trim($__env->yieldPushContent('seo_description')) ?: ($description ?: config('rwandanlyrics.default_description', 'Read Rwandan lyrics: songs, artists and albums, with authorized lyrics only.')); @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -71,7 +71,7 @@
         <div class="mx-auto max-w-5xl px-4 sm:px-6 py-8 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
             <div>
                 <p class="font-bold text-ink text-base">Rwandan<span class="text-accent-600">lyrics</span></p>
-                <p class="mt-1 max-w-xs">Rwandan lyrics, artists and albums.</p>
+                <p class="mt-1 max-w-xs">{{ config('rwandanlyrics.tagline', 'Rwandan lyrics, artists and albums.') }}</p>
                 <p class="mt-3">&copy; {{ date('Y') }} {{ config('app.name') }}</p>
             </div>
             <nav class="grid grid-cols-2 gap-x-8 gap-y-1 sm:grid-cols-2" aria-label="Footer">

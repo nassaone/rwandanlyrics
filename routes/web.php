@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\GenreController as AdminGenreController;
 use App\Http\Controllers\Admin\LanguageController as AdminLanguageController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\RedirectController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SongController as AdminSongController;
 use App\Http\Controllers\Admin\SubmissionController;
 use App\Http\Controllers\Admin\UserController;
@@ -133,4 +134,12 @@ Route::get('/report-lyrics-errors', LegalPageController::class)->defaults('page'
 Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor'])
     ->prefix('admin')->name('admin.')->group(function () {
         Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+    });
+
+// Site settings: super administrators only.
+Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':super_admin'])
+    ->prefix('admin')->name('admin.')->group(function () {
+        Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::get('settings/{group}', [SettingsController::class, 'show'])->name('settings.show');
+        Route::put('settings/{group}', [SettingsController::class, 'update'])->name('settings.update');
     });
