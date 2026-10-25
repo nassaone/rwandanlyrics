@@ -7,6 +7,7 @@ use App\Enums\RightsStatus;
 use App\Enums\VerificationStatus;
 use App\Http\Requests\Admin\Concerns\ChecksSchedule;
 use App\Http\Requests\Admin\Concerns\ImageRules;
+use App\Support\YouTube;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -18,6 +19,11 @@ class SongRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'youtube_url' => ['nullable', 'string', 'max:255', function ($attribute, $value, $fail) {
+                if (filled($value) && ! YouTube::extractId($value)) {
+                    $fail('Enter a YouTube link, for example https://www.youtube.com/watch?v=... or https://youtu.be/...');
+                }
+            }],
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('songs', 'slug')->ignore($this->route('song'))],
             'primary_artist_id' => ['required', 'integer', 'exists:artists,id'],

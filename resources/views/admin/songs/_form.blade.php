@@ -34,6 +34,8 @@
             </div>
         </fieldset>
         <x-textarea name="description" label="Editorial notes (optional)" rows="4" :value="$song->description" />
+        <x-field name="youtube_url" label="YouTube link (optional)" :value="$song->youtube_id ? \App\Support\YouTube::watchUrl($song->youtube_id) : null" />
+        <p class="text-sm text-muted">Paste the link of the official video. Only the video ID is saved. Add only videos you are allowed to link to.</p>
     </section>
 
     <section class="space-y-4" aria-labelledby="cover-heading">

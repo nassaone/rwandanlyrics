@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Support\AdminDate;
 use App\Support\AuditLogger;
 use App\Support\Redirects;
+use App\Support\YouTube;
 use BackedEnum;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,9 @@ class SongService
 
             $attributes = Arr::only($data, self::FIELDS);
             $attributes['noindex'] = (bool) ($data['noindex'] ?? false);
+            if (array_key_exists('youtube_url', $data)) {
+                $attributes['youtube_id'] = YouTube::extractId($data['youtube_url']);
+            }
             $attributes['published_at'] = AdminDate::fromInput($data['published_at'] ?? null);
             $attributes['updated_by'] = $actor->id;
 

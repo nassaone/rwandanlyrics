@@ -20,7 +20,7 @@ class Song extends Model
 
     protected $fillable = [
         'title', 'slug', 'album_id', 'track_number', 'language_id', 'release_date',
-        'description', 'external_links', 'status', 'published_at', 'verification_status',
+        'description', 'youtube_id', 'external_links', 'status', 'published_at', 'verification_status',
         'rights_status', 'rights_holder', 'rights_notes', 'rights_source',
         'seo_title', 'seo_description', 'canonical_url', 'noindex',
         'created_by', 'updated_by',
