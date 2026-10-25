@@ -19,6 +19,10 @@
 
     <p class="mt-4 max-w-2xl text-sm text-muted">{{ $intro[$group] }}</p>
 
+    @if (session('error'))
+        <x-alert type="error" class="mt-4 max-w-2xl">{{ session('error') }}</x-alert>
+    @endif
+
     @if ($errors->any())
         <x-alert type="error" class="mt-4 max-w-2xl">Some settings were not saved. Fix the fields marked below and save again.</x-alert>
     @endif
@@ -74,4 +78,26 @@
 
         <x-button type="submit">Save settings</x-button>
     </form>
+    @if ($group === 'storage')
+        @php
+            $activeDisk = config('rwandanlyrics.media_disk');
+            $why = null;
+            if ($activeDisk !== 'r2') {
+                $why = ! $settings->bool('r2_enabled') ? 'R2 is switched off.'
+                    : (! $settings->r2Configured() ? 'Some R2 fields are still empty.'
+                    : (! class_exists(\League\Flysystem\AwsS3V3\AwsS3V3Adapter::class) ? 'The S3 package is not installed on the server.' : null));
+            }
+        @endphp
+        <section class="mt-10 max-w-2xl border-t border-line pt-6" aria-labelledby="r2-status">
+            <h2 id="r2-status">Connection</h2>
+            <p class="mt-2">New uploads are stored on: <strong>{{ $activeDisk === 'r2' ? 'Cloudflare R2' : 'the server disk ('.$activeDisk.')' }}</strong>.
+                @if ($why) <span class="text-muted">{{ $why }}</span> @endif
+            </p>
+            <p class="mt-2 text-sm text-muted">Save your settings first, then test. The test writes a small file to the bucket, reads it through the public URL, and deletes it.</p>
+            <form method="POST" action="{{ route('admin.settings.test-r2') }}" class="mt-4">
+                @csrf
+                <x-button type="submit" variant="secondary">Test connection</x-button>
+            </form>
+        </section>
+    @endif
 </x-admin-layout>

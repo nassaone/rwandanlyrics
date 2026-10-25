@@ -199,6 +199,8 @@ class SettingsService
                 'endpoint' => 'https://'.$this->value('r2_account_id').'.r2.cloudflarestorage.com',
                 'url' => rtrim((string) $this->value('r2_public_url'), '/'),
                 'use_path_style_endpoint' => true,
+                'request_checksum_calculation' => 'when_required',
+                'response_checksum_validation' => 'when_required',
                 'throw' => true,
                 'report' => false,
             ]);

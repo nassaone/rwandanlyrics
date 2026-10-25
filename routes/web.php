@@ -143,6 +143,7 @@ Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':super_
         Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::get('settings/{group}', [SettingsController::class, 'show'])->name('settings.show');
         Route::put('settings/{group}', [SettingsController::class, 'update'])->name('settings.update');
+        Route::post('settings/storage/test', [SettingsController::class, 'testR2'])->name('settings.test-r2');
     });
 
 Route::get('/ads.txt', AdsTxtController::class)->name('ads-txt');
