@@ -22,7 +22,7 @@
 
     @if ($popularSongs->isNotEmpty())
         <section class="mt-10" aria-labelledby="popular">
-            <h2 id="popular" class="mt-1">Popular this week</h2>
+            <h2 id="popular" class="mt-1">Trending now</h2>
             <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
                 @foreach ($popularSongs as $song)
                     <x-song-row :song="$song" />

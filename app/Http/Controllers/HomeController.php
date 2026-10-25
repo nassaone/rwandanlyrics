@@ -23,7 +23,7 @@ class HomeController extends Controller
 
         $genres = Genre::whereHas('songs', fn ($q) => $q->publiclyVisible())->orderBy('name')->get();
 
-        $popularSongs = app(ViewStats::class)->popularSongs();
+        $popularSongs = app(ViewStats::class)->trendingSongs();
 
         return view('home', compact('latestSongs', 'popularSongs', 'artists', 'albums', 'genres'));
     }

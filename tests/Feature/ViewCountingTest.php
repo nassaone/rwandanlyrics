@@ -150,14 +150,14 @@ class ViewCountingTest extends TestCase
         ]);
 
         $this->assertSame(['Song A'], app(ViewStats::class)->popularSongs()->pluck('title')->all());
-        $this->get('/')->assertOk()->assertSee('Popular this week')->assertDontSee('Song C');
+        $this->get('/')->assertOk()->assertSee('Trending now')->assertDontSee('Song C');
     }
 
     public function test_popular_section_is_hidden_when_nothing_qualifies(): void
     {
         $this->song('Quiet Song', 'quiet-song');
 
-        $this->get('/')->assertOk()->assertDontSee('Popular this week');
+        $this->get('/')->assertOk()->assertDontSee('Trending now');
     }
 
     public function test_admin_analytics_page_is_for_editors_and_shows_real_totals(): void
