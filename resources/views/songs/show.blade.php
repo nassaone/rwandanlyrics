@@ -35,6 +35,11 @@
                 <p class="mt-5 max-w-2xl whitespace-pre-line text-muted">{{ $song->description }}</p>
             @endif
 
+            @php($viewCount = app(\App\Services\ViewStats::class)->songViews($song->id))
+            @if ($viewCount > 0)
+                <p class="mt-4 text-sm text-muted" data-views>{{ \App\Services\ViewStats::compact($viewCount) }} {{ \Illuminate\Support\Str::plural('view', $viewCount) }}</p>
+            @endif
+
             @if ($song->youtube_id)
                 <section class="mt-6" aria-labelledby="video-heading">
                     <h2 id="video-heading" class="sr-only">Video</h2>

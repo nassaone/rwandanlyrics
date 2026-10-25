@@ -100,4 +100,27 @@ class ViewStats
 
         return collect($ids)->map(fn ($id) => $songs[$id] ?? null)->filter()->take($limit)->values();
     }
+
+    /** Lifetime recorded views for one song (real counts only). */
+    public function songViews(int $songId): int
+    {
+        return (int) DB::table('daily_views')
+            ->where('type', 'song')
+            ->where('item_id', $songId)
+            ->sum('views');
+    }
+
+    /** Short display form: 950, 1.2K, 3.4M. */
+    public static function compact(int $n): string
+    {
+        if ($n < 1000) {
+            return (string) $n;
+        }
+
+        if ($n < 1000000) {
+            return rtrim(rtrim(number_format($n / 1000, 1, '.', ''), '0'), '.').'K';
+        }
+
+        return rtrim(rtrim(number_format($n / 1000000, 1, '.', ''), '0'), '.').'M';
+    }
 }
