@@ -1,4 +1,4 @@
-<x-layouts.app title="Lyrics" description="Browse the latest Rwandan song lyrics on Rwandanlyrics.">
+<x-layouts.app title="Lyrics" description="Browse the latest Rwandan song lyrics on Vocal Vibes Nation.">
     @php
         $tabs = ['newest' => 'Newest', 'trending' => 'Trending', 'az' => 'A to Z'];
         $link = fn ($sortKey, $genreSlug) => route('songs.index', array_filter([

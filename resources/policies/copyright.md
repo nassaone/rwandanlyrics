@@ -1,12 +1,12 @@
 Effective Date: October 22, 2026
 
-Website: RwandanLyrics
+Website: Vocal Vibes Nation
 
 Contact: <%COPYRIGHT_EMAIL%>
 
 ## 1. Purpose
 
-RwandanLyrics respects the intellectual property rights of musicians, songwriters, composers, music publishers, record labels, and other copyright owners. We are committed to responding responsibly to copyright concerns and handling rights-related requests fairly and promptly.
+Vocal Vibes Nation respects the intellectual property rights of musicians, songwriters, composers, music publishers, record labels, and other copyright owners. We are committed to responding responsibly to copyright concerns and handling rights-related requests fairly and promptly.
 
 This policy explains how copyrighted material may appear on our platform, how rights holders can request removal, and how users can report content that may infringe their rights.
 
@@ -14,13 +14,13 @@ This policy explains how copyrighted material may appear on our platform, how ri
 
 Song lyrics, musical compositions, sound recordings, artwork, photographs, music videos, and other creative works may be protected by copyright or other intellectual property laws.
 
-Unless expressly stated otherwise, RwandanLyrics does not claim ownership of lyrics or musical works created by third parties. Copyright remains with the respective authors, composers, publishers, performers, labels, or other lawful rights holders, as applicable.
+Unless expressly stated otherwise, Vocal Vibes Nation does not claim ownership of lyrics or musical works created by third parties. Copyright remains with the respective authors, composers, publishers, performers, labels, or other lawful rights holders, as applicable.
 
-Displaying song lyrics on this website does not transfer ownership of those works to RwandanLyrics.
+Displaying song lyrics on this website does not transfer ownership of those works to Vocal Vibes Nation.
 
 ## 3. Permission and Licensing
 
-RwandanLyrics does not represent that every lyric displayed on the website is licensed, authorized, or approved by the relevant rights holder.
+Vocal Vibes Nation does not represent that every lyric displayed on the website is licensed, authorized, or approved by the relevant rights holder.
 
 Where permission or a license is required, we aim to obtain appropriate authorization before publishing or continuing to display the relevant material.
 
@@ -30,7 +30,7 @@ If you are a rights holder and believe that any material on our website is being
 
 Users who submit lyrics, corrections, translations, annotations, artist biographies, images, or other material must have the necessary rights or authorization to submit that content.
 
-Submitting material does not transfer its copyright to RwandanLyrics. However, users authorize us to review, reproduce, format, and display their submissions as reasonably necessary to operate the website, subject to our applicable terms and privacy policy.
+Submitting material does not transfer its copyright to Vocal Vibes Nation. However, users authorize us to review, reproduce, format, and display their submissions as reasonably necessary to operate the website, subject to our applicable terms and privacy policy.
 
 We may reject, edit for formatting, restrict, or remove submissions that appear unlawful, infringing, misleading, or inconsistent with our policies.
 
@@ -46,7 +46,7 @@ Include the following information where available:
 
 - Your full name and contact information.
 - Identification of the copyrighted work you own or represent.
-- The exact URL of the allegedly infringing material on RwandanLyrics.
+- The exact URL of the allegedly infringing material on Vocal Vibes Nation.
 - An explanation of your ownership or authority to act on behalf of the rights holder.
 - A statement explaining why you believe the material is unauthorized.
 - Any supporting documentation or relevant licensing information.
@@ -81,7 +81,7 @@ Nothing in this policy is intended to waive any rights, defenses, remedies, or l
 
 For copyright questions, licensing inquiries, or removal requests:
 
-RwandanLyrics Copyright Team
+Vocal Vibes Nation Copyright Team
 
 Email: <%COPYRIGHT_EMAIL%>
 

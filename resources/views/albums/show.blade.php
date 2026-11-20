@@ -1,7 +1,7 @@
 @php($artistNames = $album->artists->pluck('name')->join(', '))
 <x-layouts.app
     :title="$album->seo_title ?: $album->title.($artistNames ? ' - '.$artistNames : '')"
-    :description="$album->seo_description ?: ($album->title.' tracklist and lyrics on Rwandanlyrics.')"
+    :description="$album->seo_description ?: ($album->title.' tracklist and lyrics on Vocal Vibes Nation.')"
     :robots="$album->noindex ? 'noindex,follow' : 'index,follow'">
 @push('head')
     <x-json-ld :data="\App\Support\SeoSchema::album($album)" />

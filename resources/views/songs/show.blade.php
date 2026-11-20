@@ -2,7 +2,7 @@
 @php($hasInfo = $album || $song->track_number || $song->release_date || $song->language || $song->rights_holder)
 <x-layouts.app
     :title="$song->seo_title ?: $song->title.' lyrics'.($artistNames ? ' - '.$artistNames : '')"
-    :description="$song->seo_description ?: ('Lyrics of '.$song->title.($artistNames ? ' by '.$artistNames : '').' on Rwandanlyrics.')"
+    :description="$song->seo_description ?: ('Lyrics of '.$song->title.($artistNames ? ' by '.$artistNames : '').' on Vocal Vibes Nation.')"
     :robots="$song->noindex ? 'noindex,follow' : 'index,follow'">
     @push('head')
         <x-json-ld :data="\App\Support\SeoSchema::song($song)" />

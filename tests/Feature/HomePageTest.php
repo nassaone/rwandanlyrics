@@ -11,7 +11,7 @@ class HomePageTest extends TestCase
 
     public function test_empty_home_page_shows_honest_empty_state(): void
     {
-        $this->get('/')->assertOk()->assertSee('Rwandanlyrics')->assertSee('No lyrics published yet');
+        $this->get('/')->assertOk()->assertSee('Vocal Vibes Nation')->assertSee('No lyrics published yet');
     }
 
     public function test_unknown_page_returns_404(): void

@@ -1,6 +1,6 @@
 Effective Date: October 22, 2026
 
-RwandanLyrics respects the privacy of visitors and is committed to handling personal information responsibly. This Privacy Policy explains what information may be collected when you visit our website, how it may be used, and the choices available to you.
+Vocal Vibes Nation respects the privacy of visitors and is committed to handling personal information responsibly. This Privacy Policy explains what information may be collected when you visit our website, how it may be used, and the choices available to you.
 
 ## 1. Information We Collect
 
@@ -38,7 +38,7 @@ You can manage cookies through your browser settings. Disabling certain cookies 
 
 If advertising or analytics services are enabled, those providers may process certain technical or usage information to deliver advertisements, measure performance, or analyze traffic.
 
-The providers used by RwandanLyrics will depend on the services actually configured on the website. Their own privacy policies and applicable consent requirements may also apply.
+The providers used by Vocal Vibes Nation will depend on the services actually configured on the website. Their own privacy policies and applicable consent requirements may also apply.
 
 We do not claim to use any particular advertising or analytics provider unless it is actually implemented.
 
@@ -70,7 +70,7 @@ Our website may contain links to artist pages, streaming services, social media 
 
 ## 9. Children's Privacy
 
-RwandanLyrics is not intended to collect personal information from children in violation of applicable law. If you believe a child has provided personal information inappropriately, please contact us so we can review the situation.
+Vocal Vibes Nation is not intended to collect personal information from children in violation of applicable law. If you believe a child has provided personal information inappropriately, please contact us so we can review the situation.
 
 ## 10. International Data Processing
 
@@ -84,7 +84,7 @@ We may update this Privacy Policy as our website, services, or legal obligations
 
 For privacy questions or requests:
 
-RwandanLyrics Privacy Team
+Vocal Vibes Nation Privacy Team
 
 Email: <%PRIVACY_EMAIL%>
 

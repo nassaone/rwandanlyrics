@@ -1,4 +1,4 @@
-Found an error in the lyrics, song title, artist name, or song credits on RwandanLyrics? Help us keep our music information accurate.
+Found an error in the lyrics, song title, artist name, or song credits on Vocal Vibes Nation? Help us keep our music information accurate.
 
 Please email <%CORRECTIONS_EMAIL%> with:
 
@@ -13,4 +13,4 @@ Please note that submitting a correction does not guarantee publication of the s
 
 For copyright ownership disputes or removal requests, please use <%COPYRIGHT_EMAIL%> instead.
 
-Thank you for helping us improve RwandanLyrics and support accurate information about Rwandan music.
+Thank you for helping us improve Vocal Vibes Nation and support accurate information about Rwandan music.

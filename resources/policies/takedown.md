@@ -1,10 +1,10 @@
-RwandanLyrics takes copyright concerns seriously. If you are a musician, songwriter, publisher, record label, or authorized representative and believe that lyrics or other material on our website infringes your copyright, you may submit a removal request.
+Vocal Vibes Nation takes copyright concerns seriously. If you are a musician, songwriter, publisher, record label, or authorized representative and believe that lyrics or other material on our website infringes your copyright, you may submit a removal request.
 
 ## How to Request Removal
 
 Send an email to <%COPYRIGHT_EMAIL%> with the subject line:
 
-**Copyright Takedown Request – RwandanLyrics**
+**Copyright Takedown Request – Vocal Vibes Nation**
 
 Please include:
 

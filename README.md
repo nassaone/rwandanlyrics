@@ -1,4 +1,4 @@
-# Rwandanlyrics
+# Vocal Vibes Nation
 
 A modern Laravel platform for discovering Rwandan music, artists, albums, and authorized song lyrics.
 

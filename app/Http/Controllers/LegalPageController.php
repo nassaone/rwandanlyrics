@@ -9,9 +9,9 @@ class LegalPageController extends Controller
 {
     /** page key => [title, markdown file, meta description] */
     private const PAGES = [
-        'privacy' => ['Privacy Policy', 'privacy', 'How Rwandanlyrics handles personal information, cookies and your privacy choices.'],
-        'copyright' => ['Copyright & Content Rights Policy', 'copyright', 'How Rwandanlyrics treats copyright, lyrics ownership, permissions and rights complaints.'],
-        'takedown' => ['Copyright Takedown Requests', 'takedown', 'How rights holders can ask Rwandanlyrics to review or remove material.'],
+        'privacy' => ['Privacy Policy', 'privacy', 'How Vocal Vibes Nation handles personal information, cookies and your privacy choices.'],
+        'copyright' => ['Copyright & Content Rights Policy', 'copyright', 'How Vocal Vibes Nation treats copyright, lyrics ownership, permissions and rights complaints.'],
+        'takedown' => ['Copyright Takedown Requests', 'takedown', 'How rights holders can ask Vocal Vibes Nation to review or remove material.'],
         'corrections' => ['Report Incorrect Lyrics', 'corrections', 'How to report errors in lyrics, titles, artist names or credits.'],
     ];
 

@@ -1,4 +1,4 @@
-<x-layouts.app title="Artists" description="Browse Rwandan artists on Rwandanlyrics.">
+<x-layouts.app title="Artists" description="Browse Rwandan artists on Vocal Vibes Nation.">
     <x-breadcrumbs :items="['Home' => route('home'), 'Artists' => null]" />
     <h1>Artists</h1>
     @if ($artists->isEmpty())

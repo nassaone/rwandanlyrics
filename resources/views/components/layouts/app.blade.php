@@ -40,7 +40,7 @@
     <header class="sticky top-0 z-30 border-b border-line bg-page/95 backdrop-blur" x-data="{ open: false }" @keydown.escape.window="open = false">
         <div class="flex h-1" aria-hidden="true"><span class="flex-1 bg-accent-600"></span><span class="flex-1 bg-sun"></span><span class="flex-1 bg-sky"></span></div>
         <div class="mx-auto max-w-5xl px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
-            <a href="{{ route('home') }}" class="font-bold text-xl tracking-tight">Rwandan<span class="text-accent-600">lyrics</span></a>
+            <a href="{{ route('home') }}" class="font-bold text-xl tracking-tight">Vocal Vibes <span class="text-accent-600">Nation</span></a>
             <nav class="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Main">
                 <x-nav-links />
             </nav>
@@ -75,8 +75,8 @@
     <footer class="border-t border-line bg-surface text-sm text-muted">
         <div class="mx-auto max-w-5xl px-4 sm:px-6 py-8 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
             <div>
-                <p class="font-bold text-ink text-base">Rwandan<span class="text-accent-600">lyrics</span></p>
-                <p class="mt-1 max-w-xs">{{ config('rwandanlyrics.tagline', 'Rwandan lyrics, artists and albums.') }}</p>
+                <p class="font-bold text-ink text-base">Vocal Vibes <span class="text-accent-600">Nation</span></p>
+                <p class="mt-1 max-w-xs">{{ config('rwandanlyrics.tagline', 'Rwandan and East African lyrics, artists and albums.') }}</p>
                 <p class="mt-3">&copy; {{ date('Y') }} {{ config('app.name') }}</p>
                 @php
                     $social = ['facebook' => 'Facebook', 'instagram' => 'Instagram', 'x' => 'X', 'youtube' => 'YouTube', 'tiktok' => 'TikTok', 'whatsapp' => 'WhatsApp'];

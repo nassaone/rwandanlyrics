@@ -1,4 +1,4 @@
-<x-layouts.app title="Genres" description="Browse Rwandan music by genre on Rwandanlyrics.">
+<x-layouts.app title="Genres" description="Browse Rwandan music by genre on Vocal Vibes Nation.">
     <x-breadcrumbs :items="['Home' => route('home'), 'Genres' => null]" />
     <h1>Genres</h1>
     @if ($genres->isEmpty())
