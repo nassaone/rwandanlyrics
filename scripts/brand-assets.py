@@ -15,6 +15,11 @@ G = {
  'I': ["#####","..#..","..#..","..#..","..#..","..#..","#####"],
  'C': [".###.","#...#","#....","#....","#....","#...#",".###."],
  'S': [".####","#....","#....",".###.","....#","....#","####."],
+ 'V': ["#...#","#...#","#...#","#...#","#...#",".#.#.","..#.."],
+ 'O': [".###.","#...#","#...#","#...#","#...#","#...#",".###."],
+ 'B': ["####.","#...#","#...#","####.","#...#","#...#","####."],
+ 'E': ["#####","#....","#....","####.","#....","#....","#####"],
+ 'T': ["#####","..#..","..#..","..#..","..#..","..#..","..#.."],
 }
 
 class Canvas:
@@ -44,23 +49,23 @@ def icon(size, path):
     k = max(1, size // 12)
     gw, gh = 5 * k, 7 * k
     x, y = (size - gw) // 2, int(size * 0.18)
-    c.glyph('R', x, y, k, WHITE)
+    c.glyph('V', x, y, k, WHITE)
     c.rect(int(size * 0.22), y + gh + k, int(size * 0.56), max(2, k), YELLOW)
     c.save(path)
 
 def og(path):
     c = Canvas(1200, 630, GREEN)
     k = 14
-    text = [('R','W','A','N','D','A','N'), ('L','Y','R','I','C','S')]
-    chars = [(ch, WHITE) for ch in text[0]] + [(ch, YELLOW) for ch in text[1]]
-    total = len(chars) * 6 * k - k
-    x = (1200 - total) // 2
-    y = 250
-    for ch, col in chars:
-        c.glyph(ch, x, y, k, col)
-        x += 6 * k
+    y = 180
+    for text, col in [("VOCAL VIBES", WHITE), ("NATION", YELLOW)]:
+        total = len(text) * 6 * k - k
+        x = (1200 - total) // 2
+        for ch in text:
+            if ch != ' ':
+                c.glyph(ch, x, y, k, col)
+            x += 6 * k
+        y += 7 * k + 34
     c.rect(0, 606, 400, 24, GREEN); c.rect(400, 606, 400, 24, YELLOW); c.rect(800, 606, 400, 24, SKY)
-    c.rect(0, 0, 400, 12, WHITE if False else GREEN)
     c.save(path)
 
 if __name__ == '__main__':
