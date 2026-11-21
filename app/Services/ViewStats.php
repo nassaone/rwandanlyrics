@@ -123,4 +123,31 @@ class ViewStats
 
         return rtrim(rtrim(number_format($n / 1000000, 1, '.', ''), '0'), '.').'M';
     }
+
+    /** Ids of the items with the best recent-views score (artists, albums or songs), best first. */
+    public function trendingIds(string $type, ?int $days = null, int $limit = 40): array
+    {
+        $days ??= (int) config('rwandanlyrics.analytics.trending_days', 14);
+        $halfLife = max(0.5, (float) config('rwandanlyrics.analytics.trending_half_life', 3));
+        $min = (int) config('rwandanlyrics.analytics.min_views', 3);
+        $today = now()->startOfDay()->getTimestamp();
+
+        $rows = DB::table('daily_views')
+            ->where('type', $type)
+            ->where('viewed_on', '>=', $this->since($days))
+            ->get(['item_id', 'viewed_on', 'views']);
+
+        $scores = [];
+        $totals = [];
+        foreach ($rows as $row) {
+            $age = max(0, ($today - strtotime($row->viewed_on)) / 86400);
+            $scores[$row->item_id] = ($scores[$row->item_id] ?? 0) + $row->views * (0.5 ** ($age / $halfLife));
+            $totals[$row->item_id] = ($totals[$row->item_id] ?? 0) + $row->views;
+        }
+
+        $scores = array_filter($scores, fn ($score, $id) => $totals[$id] >= $min, ARRAY_FILTER_USE_BOTH);
+        arsort($scores);
+
+        return array_map('intval', array_slice(array_keys($scores), 0, $limit));
+    }
 }

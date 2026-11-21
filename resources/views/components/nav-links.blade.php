@@ -2,6 +2,7 @@
 @php($link = $block ? 'block py-3' : 'hover:text-accent-600')
 <a href="{{ route('songs.index') }}" class="{{ $link }}">Lyrics</a>
 <a href="{{ route('artists.index') }}" class="{{ $link }}">Artists</a>
+<a href="{{ route('albums.index') }}" class="{{ $link }}">Albums</a>
 <a href="{{ route('genres.index') }}" class="{{ $link }}">Genres</a>
 @auth
     @if (auth()->user()->atLeast(\App\Enums\Role::Editor))

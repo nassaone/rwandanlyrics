@@ -1,4 +1,4 @@
-<x-layouts.app title="Lyrics" description="Browse the latest Rwandan song lyrics on Vocal Vibes Nation.">
+<x-layouts.app title="Lyrics" description="Browse the latest Rwandan song lyrics on Vocal Vibes Nation." :robots="($genre || $sort !== 'newest') ? 'noindex,follow' : 'index,follow'">
     @php
         $tabs = ['newest' => 'Newest', 'trending' => 'Trending', 'az' => 'A to Z'];
         $link = fn ($sortKey, $genreSlug) => route('songs.index', array_filter([
