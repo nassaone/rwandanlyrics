@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ? $title.' | ' : '' }}{{ config('app.name') }}</title>
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="robots" content="{{ $robots }}">
+    <meta name="robots" content="{{ app(\App\Services\SettingsService::class)->bool('search_indexing') ? $robots : 'noindex,nofollow' }}">
     <link rel="canonical" href="{{ url()->current() }}">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">

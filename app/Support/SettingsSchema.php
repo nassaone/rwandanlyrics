@@ -30,6 +30,7 @@ final class SettingsSchema
 
         return [
             // General
+            'search_indexing' => $f('general', 'Let search engines index the site', 'bool', ['rules' => ['nullable', 'boolean'], 'default' => true, 'help' => 'Turn this off while the site is being filled: search engines are then told not to index any page. Turn it on when the site has real content.']),
             'site_name' => $f('general', 'Site name', 'text', ['rules' => ['nullable', 'string', 'max:60'], 'help' => 'Shown in titles, the header and emails. Leave empty to use the default.']),
             'tagline' => $f('general', 'Tagline', 'text', ['rules' => ['nullable', 'string', 'max:120']]),
             'default_description' => $f('general', 'Default search description', 'textarea', ['rules' => ['nullable', 'string', 'max:300'], 'help' => 'Used on pages that have no description of their own.']),

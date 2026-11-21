@@ -6,6 +6,7 @@ use App\Models\Album;
 use App\Models\Artist;
 use App\Models\Genre;
 use App\Models\Song;
+use App\Services\SettingsService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,7 @@ class SeoController extends Controller
 
     public function robots(): Response
     {
-        if (config('app.env') !== 'production') {
+        if (config('app.env') !== 'production' || ! app(SettingsService::class)->bool('search_indexing')) {
             // Never let staging, Codespaces or local copies be indexed.
             $body = "User-agent: *\nDisallow: /\n";
         } else {

@@ -15,6 +15,7 @@
     if (auth()->user()->atLeast(\App\Enums\Role::Admin)) {
         $items['Users'] = ['admin.users.index', 'admin.users.*'];
         $items['Activity'] = ['admin.audit.index', 'admin.audit.*'];
+        $items['Import'] = ['admin.import.index', 'admin.import.*'];
     }
     if (auth()->user()->atLeast(\App\Enums\Role::SuperAdmin)) {
         $items['Settings'] = ['admin.settings.index', 'admin.settings.*'];

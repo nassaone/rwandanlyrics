@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\GenreController as AdminGenreController;
+use App\Http\Controllers\Admin\ImportController;
 use App\Http\Controllers\Admin\LanguageController as AdminLanguageController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\RedirectController;
@@ -147,3 +148,12 @@ Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':super_
     });
 
 Route::get('/ads.txt', AdsTxtController::class)->name('ads-txt');
+
+// Bulk import from CSV: administrators.
+Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':admin'])
+    ->prefix('admin')->name('admin.')->group(function () {
+        Route::get('import', [ImportController::class, 'index'])->name('import.index');
+        Route::get('import/template/{kind}', [ImportController::class, 'template'])->whereIn('kind', ['songs', 'artists'])->name('import.template');
+        Route::post('import/preview', [ImportController::class, 'preview'])->name('import.preview');
+        Route::post('import/commit', [ImportController::class, 'commit'])->name('import.commit');
+    });
