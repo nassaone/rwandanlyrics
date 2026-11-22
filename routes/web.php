@@ -81,6 +81,7 @@ Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor
         Route::get('/', AdminController::class)->name('dashboard');
         Route::post('songs/bulk', [AdminSongController::class, 'bulk'])->name('songs.bulk');
         Route::resource('songs', AdminSongController::class)->except('show');
+        Route::post('artists/bulk', [AdminArtistController::class, 'bulk'])->name('artists.bulk');
         Route::resource('artists', AdminArtistController::class)->except('show');
         Route::post('artists/{artist}/merge', [AdminArtistController::class, 'merge'])->name('artists.merge');
         Route::resource('albums', AdminAlbumController::class)->except('show');

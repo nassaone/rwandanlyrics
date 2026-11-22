@@ -15,6 +15,7 @@ use App\Support\AdminDate;
 use App\Support\AuditLogger;
 use App\Support\Redirects;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -29,12 +30,7 @@ class ArtistController extends Controller
     {
         Gate::authorize('viewAny', Artist::class);
 
-        $q = trim((string) $request->query('q'));
-
-        $artists = Artist::query()
-            ->when($q !== '', fn ($query) => $query->where('name', 'like', '%'.$q.'%'))
-            ->when(PublicationStatus::tryFrom((string) $request->query('status')), fn ($query, $status) => $query->where('status', $status->value))
-            ->orderBy('name')->paginate(25)->withQueryString();
+        $artists = $this->listQuery($request)->orderBy('name')->paginate(25)->withQueryString();
 
         return view('admin.artists.index', compact('artists'));
     }
@@ -85,6 +81,70 @@ class ArtistController extends Controller
         $artist->delete();
 
         return redirect()->route('admin.artists.index')->with('status', 'Artist deleted.');
+    }
+
+    public function bulk(Request $request): RedirectResponse
+    {
+        Gate::authorize('viewAny', Artist::class);
+        abort_unless($request->user()->atLeast(Role::Admin), 403);
+
+        $data = $request->validate([
+            'action' => ['required', 'in:publish,unpublish'],
+            'scope' => ['nullable', 'in:page,all'],
+            'ids' => ['nullable', 'array'],
+            'ids.*' => ['integer'],
+        ]);
+
+        $all = ($data['scope'] ?? 'page') === 'all';
+        if (! $all && empty($data['ids'])) {
+            return back()->with('status', 'Tick at least one artist first.');
+        }
+
+        $query = $all ? $this->listQuery($request) : Artist::query()->whereIn('id', $data['ids']);
+        $artists = $query->orderBy('id')->take(1000)->get();
+
+        $done = 0;
+        $skipped = 0;
+
+        foreach ($artists as $artist) {
+            if (! Gate::allows('update', $artist)) {
+                $skipped++;
+
+                continue;
+            }
+
+            if ($data['action'] === 'publish') {
+                $artist->update([
+                    'status' => 'published',
+                    'published_at' => ($artist->published_at && $artist->published_at->lte(now())) ? $artist->published_at : now(),
+                ]);
+            } else {
+                $artist->update(['status' => 'draft']);
+            }
+
+            AuditLogger::record('artist.bulk_'.$data['action'], $artist, ['bulk' => true]);
+            $done++;
+        }
+
+        $label = $data['action'] === 'publish' ? 'Published' : 'Moved to draft:';
+        $message = "{$label} {$done} artist".($done === 1 ? '' : 's').'.';
+        if ($skipped) {
+            $message .= " Skipped {$skipped} you cannot edit.";
+        }
+        if ($all && $artists->count() === 1000) {
+            $message .= ' Limit of 1000 per run reached, run it again for the rest.';
+        }
+
+        return back()->with('status', $message);
+    }
+
+    private function listQuery(Request $request): Builder
+    {
+        $q = trim((string) $request->input('q'));
+
+        return Artist::query()
+            ->when($q !== '', fn ($query) => $query->where('name', 'like', '%'.$q.'%'))
+            ->when(PublicationStatus::tryFrom((string) $request->input('status')), fn ($query, $status) => $query->where('status', $status->value));
     }
 
     public function merge(MergeArtistRequest $request, Artist $artist): RedirectResponse
