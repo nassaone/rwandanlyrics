@@ -18,12 +18,12 @@ class Discover
         $ids = app(ViewStats::class)->trendingIds('song', null, $limit);
 
         $trending = $ids
-            ? Song::publiclyVisible()->with('artists')->whereIn('songs.id', $ids)->get()
+            ? Song::publiclyVisible()->with(['artists.image', 'cover', 'album.cover'])->whereIn('songs.id', $ids)->get()
                 ->sortBy(fn ($s) => array_search($s->id, $ids))->values()
             : collect();
 
         if ($trending->count() < $limit) {
-            $fill = Song::publiclyVisible()->with('artists')
+            $fill = Song::publiclyVisible()->with(['artists.image', 'cover', 'album.cover'])
                 ->whereNotIn('songs.id', $trending->pluck('id'))
                 ->latest('songs.published_at')->limit($limit - $trending->count())->get();
             $trending = $trending->concat($fill);
@@ -34,7 +34,7 @@ class Discover
 
     public function artists(int $limit = 8): Collection
     {
-        $live = fn () => Artist::published()->whereHas('songs', fn ($q) => $q->publiclyVisible());
+        $live = fn () => Artist::published()->with('image')->whereHas('songs', fn ($q) => $q->publiclyVisible());
         $ids = app(ViewStats::class)->trendingIds('artist', null, $limit);
 
         $popular = $ids
