@@ -96,10 +96,9 @@ class SongController extends Controller
         }
 
         $query = $all ? $this->listQuery($request) : Song::query()->whereIn('id', $data['ids']);
-        $songs = $query->with('currentLyric')->orderBy('id')->take(1000)->get();
+        $songs = $query->orderBy('id')->take(1000)->get();
 
         $done = 0;
-        $skippedNoLyrics = 0;
         $skippedDenied = 0;
 
         foreach ($songs as $song) {
@@ -110,11 +109,6 @@ class SongController extends Controller
             }
 
             if ($data['action'] === 'publish') {
-                if (! $song->currentLyric) {
-                    $skippedNoLyrics++;
-
-                    continue;
-                }
                 $song->update([
                     'status' => 'published',
                     'rights_status' => 'authorized',
@@ -132,9 +126,6 @@ class SongController extends Controller
 
         $label = ['publish' => 'Published', 'unpublish' => 'Moved to draft:', 'authorize' => 'Authorized rights for'][$data['action']];
         $message = "{$label} {$done} song".($done === 1 ? '' : 's').'.';
-        if ($skippedNoLyrics) {
-            $message .= " Skipped {$skippedNoLyrics} without lyrics.";
-        }
         if ($skippedDenied) {
             $message .= " Skipped {$skippedDenied} you cannot edit.";
         }

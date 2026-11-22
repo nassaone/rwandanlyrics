@@ -46,7 +46,7 @@
                     <button type="submit" name="action" value="authorize" class="min-h-11 rounded-md border border-line px-4 py-2 text-sm hover:bg-page">Authorize rights only</button>
                     <button type="submit" name="action" value="unpublish" class="min-h-11 rounded-md border border-line px-4 py-2 text-sm hover:bg-page">Move to draft</button>
                 </div>
-                <p class="mt-2 text-xs text-muted">Publish skips songs that have no lyrics. Authorize only songs whose lyrics you have the right to publish.</p>
+                <p class="mt-2 text-xs text-muted">Songs without lyrics go live too, but stay hidden from Google until lyrics are added. Authorize only songs whose lyrics you have the right to publish.</p>
             </div>
         @endif
 

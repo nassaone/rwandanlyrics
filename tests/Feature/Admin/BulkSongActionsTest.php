@@ -31,7 +31,7 @@ class BulkSongActionsTest extends TestCase
         return $song;
     }
 
-    public function test_publish_and_authorize_skips_songs_without_lyrics(): void
+    public function test_publish_and_authorize_also_publishes_songs_without_lyrics(): void
     {
         $with = $this->draft('With Words', true);
         $without = $this->draft('No Words', false);
@@ -44,8 +44,8 @@ class BulkSongActionsTest extends TestCase
         $this->assertSame('published', $with->status->value);
         $this->assertSame('authorized', $with->rights_status->value);
         $this->assertNotNull($with->published_at);
-        $this->assertSame('draft', $without->refresh()->status->value);
-        $this->assertSame(1, Song::publiclyVisible()->count());
+        $this->assertSame('published', $without->refresh()->status->value);
+        $this->assertSame(2, Song::publiclyVisible()->count());
     }
 
     public function test_editors_cannot_use_bulk_actions(): void
