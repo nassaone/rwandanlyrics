@@ -52,6 +52,20 @@ class AlbumController extends Controller
             ->whereIn('artists.id', $album->artists->pluck('id'))
             ->pluck('artists.id')->all();
 
-        return view('albums.show', compact('album', 'tracks', 'linkableArtistIds'));
+        $mainArtist = $album->artists->first(fn ($a) => in_array($a->id, $linkableArtistIds, true));
+
+        $otherAlbums = $mainArtist
+            ? $mainArtist->albums()->published()->whereKeyNot($album->id)->with('cover')
+                ->orderByDesc('albums.release_date')->limit(6)->get()
+            : collect();
+
+        $moreSongs = $mainArtist
+            ? $mainArtist->songs()->publiclyVisible()
+                ->where(fn ($q) => $q->whereNull('songs.album_id')->orWhere('songs.album_id', '!=', $album->id))
+                ->with(['artists.image', 'cover', 'album.cover'])
+                ->latest('songs.published_at')->limit(6)->get()
+            : collect();
+
+        return view('albums.show', compact('album', 'tracks', 'linkableArtistIds', 'mainArtist', 'otherAlbums', 'moreSongs'));
     }
 }

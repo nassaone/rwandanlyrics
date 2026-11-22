@@ -72,6 +72,10 @@
         {{ $slot }}
     </main>
 
+    @unless (request()->routeIs('home'))
+        <x-discover />
+    @endunless
+
     <footer class="border-t border-line bg-surface text-sm text-muted">
         <div class="mx-auto max-w-5xl px-4 sm:px-6 py-8 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
             <div>

@@ -39,4 +39,31 @@
             </ol>
         @endif
     </section>
+
+    @if ($mainArtist && $otherAlbums->isNotEmpty())
+        <section class="mt-10" aria-labelledby="other-albums">
+            <h2 id="other-albums" class="mt-1">Other albums by {{ $mainArtist->name }}</h2>
+            <ul class="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                @foreach ($otherAlbums as $item)
+                    <li>
+                        <a href="{{ route('albums.show', $item->slug) }}" class="flex items-center gap-3 rounded-xl border border-line p-3 hover:bg-accent-50">
+                            <x-avatar :media="$item->cover" :name="$item->title" shape="square" size="size-12" />
+                            <span class="min-w-0 font-medium">{{ $item->title }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
+
+    @if ($mainArtist && $moreSongs->isNotEmpty())
+        <section class="mt-10" aria-labelledby="more-songs">
+            <h2 id="more-songs" class="mt-1">More lyrics by {{ $mainArtist->name }}</h2>
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
+                @foreach ($moreSongs as $item)
+                    <x-song-row :song="$item" />
+                @endforeach
+            </ul>
+        </section>
+    @endif
 </x-layouts.app>

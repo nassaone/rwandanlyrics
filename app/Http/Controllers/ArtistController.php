@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artist;
 use App\Models\Genre;
+use App\Models\Song;
 use App\Services\ViewStats;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -52,6 +53,24 @@ class ArtistController extends Controller
 
         $albums = $artist->albums()->published()->orderByDesc('albums.release_date')->get();
 
-        return view('artists.show', compact('artist', 'songs', 'albums'));
+        $genreIds = $artist->genres->pluck('id')->merge(
+            Genre::whereHas('songs', fn ($q) => $q->publiclyVisible()->whereHas('artists', fn ($a) => $a->where('artists.id', $artist->id)))->pluck('id')
+        )->unique()->values();
+
+        $similar = $genreIds->isEmpty() ? collect() : Artist::published()
+            ->whereKeyNot($artist->id)
+            ->where(fn ($q) => $q
+                ->whereHas('genres', fn ($g) => $g->whereIn('genres.id', $genreIds))
+                ->orWhereHas('songs.genres', fn ($g) => $g->whereIn('genres.id', $genreIds)))
+            ->whereHas('songs', fn ($q) => $q->publiclyVisible())
+            ->with('image')->orderBy('artists.name')->limit(6)->get();
+
+        $moreInGenres = $genreIds->isEmpty() ? collect() : Song::publiclyVisible()
+            ->whereDoesntHave('artists', fn ($q) => $q->where('artists.id', $artist->id))
+            ->whereHas('genres', fn ($q) => $q->whereIn('genres.id', $genreIds))
+            ->with(['artists.image', 'cover', 'album.cover'])
+            ->latest('songs.published_at')->limit(6)->get();
+
+        return view('artists.show', compact('artist', 'songs', 'albums', 'similar', 'moreInGenres'));
     }
 }

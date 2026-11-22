@@ -62,4 +62,31 @@
             <div class="mt-6">{{ $songs->links() }}</div>
         @endif
     </section>
+
+    @if ($similar->isNotEmpty())
+        <section class="mt-10" aria-labelledby="similar">
+            <h2 id="similar" class="mt-1">Similar artists</h2>
+            <ul class="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                @foreach ($similar as $item)
+                    <li>
+                        <a href="{{ route('artists.show', $item->slug) }}" class="flex items-center gap-3 rounded-xl border border-line p-3 hover:bg-accent-50">
+                            <x-avatar :media="$item->image" :name="$item->name" size="size-10" />
+                            <span class="min-w-0 font-medium">{{ $item->name }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
+
+    @if ($moreInGenres->isNotEmpty())
+        <section class="mt-10" aria-labelledby="more-genres">
+            <h2 id="more-genres" class="mt-1">More lyrics you may like</h2>
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
+                @foreach ($moreInGenres as $item)
+                    <x-song-row :song="$item" />
+                @endforeach
+            </ul>
+        </section>
+    @endif
 </x-layouts.app>
