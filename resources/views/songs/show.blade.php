@@ -109,6 +109,18 @@
         </aside>
     </article>
 
+    @if ($moreArtist && $moreFromArtist->isNotEmpty())
+        <section class="mt-10" aria-labelledby="more-artist">
+            <h2 id="more-artist" class="mt-1">More from {{ $moreArtist->name }}</h2>
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
+                @foreach ($moreFromArtist as $item)
+                    <x-song-row :song="$item" />
+                @endforeach
+            </ul>
+            <p class="mt-3 text-sm"><a href="{{ route('artists.show', $moreArtist->slug) }}" class="text-accent-600 hover:underline">See all songs by {{ $moreArtist->name }}</a></p>
+        </section>
+    @endif
+
     @if ($related->isNotEmpty())
         <section class="mt-10" aria-labelledby="related">
             <h2 id="related" class="mt-1">Related songs</h2>
@@ -117,6 +129,18 @@
                     <x-song-row :song="$item" />
                 @endforeach
             </ul>
+        </section>
+    @endif
+
+    @if ($latest->isNotEmpty())
+        <section class="mt-10" aria-labelledby="latest">
+            <h2 id="latest" class="mt-1">New lyrics</h2>
+            <ul class="mt-2 md:grid md:grid-cols-2 md:gap-x-10">
+                @foreach ($latest as $item)
+                    <x-song-row :song="$item" />
+                @endforeach
+            </ul>
+            <p class="mt-3 text-sm"><a href="{{ route('songs.index') }}" class="text-accent-600 hover:underline">Browse all lyrics</a></p>
         </section>
     @endif
 </x-layouts.app>

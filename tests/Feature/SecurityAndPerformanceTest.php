@@ -43,14 +43,14 @@ class SecurityAndPerformanceTest extends TestCase
         $lead = Artist::forceCreate(['name' => 'Lead Artist', 'slug' => 'lead-artist', 'status' => 'published', 'published_at' => now()->subDay(), 'verification_status' => 'unverified']);
         $genre = Genre::forceCreate(['name' => 'Rock', 'slug' => 'rock']);
 
-        $this->seedSongs(1, 3, $album, $lead, $genre);
+        $this->seedSongs(1, 14, $album, $lead, $genre);
         $small = $this->queryCounts();
 
-        $this->seedSongs(4, 23, $album, $lead, $genre);
+        $this->seedSongs(15, 40, $album, $lead, $genre);
         $large = $this->queryCounts();
 
         foreach ($small as $url => $count) {
-            $this->assertSame($count, $large[$url], "Possible N+1 on {$url}: {$count} queries with 3 songs, {$large[$url]} with 23.");
+            $this->assertSame($count, $large[$url], "Possible N+1 on {$url}: {$count} queries with 14 songs, {$large[$url]} with 40.");
         }
     }
 

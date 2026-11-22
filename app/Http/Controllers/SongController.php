@@ -57,17 +57,29 @@ class SongController extends Controller
 
         $album = $song->album_id ? Album::published()->find($song->album_id) : null;
 
-        $artistIds = $song->artists->pluck('id');
         $genreIds = $song->genres->pluck('id');
 
-        $related = Song::publiclyVisible()
+        $cards = fn () => Song::publiclyVisible()
             ->whereKeyNot($song->id)
-            ->where(function ($query) use ($artistIds, $genreIds) {
-                $query->whereHas('artists', fn ($q) => $q->whereIn('artists.id', $artistIds))
-                    ->orWhereHas('genres', fn ($q) => $q->whereIn('genres.id', $genreIds));
-            })
-            ->with(['artists.image', 'cover', 'album.cover'])->latest('songs.published_at')->limit(6)->get();
+            ->with(['artists.image', 'cover', 'album.cover'])
+            ->withExists('currentLyric')
+            ->orderByDesc('current_lyric_exists')
+            ->latest('songs.published_at');
 
-        return view('songs.show', compact('song', 'linkableArtistIds', 'album', 'related'));
+        $moreArtist = $song->artists->first(fn ($a) => in_array($a->id, $linkableArtistIds, true));
+        $moreFromArtist = $moreArtist
+            ? $cards()->whereHas('artists', fn ($q) => $q->where('artists.id', $moreArtist->id))->limit(6)->get()
+            : collect();
+
+        $related = $genreIds->isEmpty() ? collect() : $cards()
+            ->whereNotIn('songs.id', $moreFromArtist->pluck('id'))
+            ->whereHas('genres', fn ($q) => $q->whereIn('genres.id', $genreIds))
+            ->limit(6)->get();
+
+        $latest = $cards()
+            ->whereNotIn('songs.id', $moreFromArtist->pluck('id')->merge($related->pluck('id')))
+            ->limit(6)->get();
+
+        return view('songs.show', compact('song', 'linkableArtistIds', 'album', 'moreArtist', 'moreFromArtist', 'related', 'latest'));
     }
 }
