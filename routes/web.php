@@ -79,6 +79,7 @@ Route::middleware(['auth', EnsureUserIsActive::class])->group(function () {
 Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':editor'])
     ->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', AdminController::class)->name('dashboard');
+        Route::post('songs/bulk', [AdminSongController::class, 'bulk'])->name('songs.bulk');
         Route::resource('songs', AdminSongController::class)->except('show');
         Route::resource('artists', AdminArtistController::class)->except('show');
         Route::post('artists/{artist}/merge', [AdminArtistController::class, 'merge'])->name('artists.merge');

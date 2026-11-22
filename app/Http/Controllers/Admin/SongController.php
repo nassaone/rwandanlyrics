@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\PublicationStatus;
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SongRequest;
 use App\Models\Album;
@@ -13,6 +14,7 @@ use App\Models\Song;
 use App\Services\SongService;
 use App\Support\AuditLogger;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -25,14 +27,7 @@ class SongController extends Controller
     {
         Gate::authorize('viewAny', Song::class);
 
-        $q = trim((string) $request->query('q'));
-        $filter = $request->query('filter');
-
-        $songs = Song::query()->with('artists')
-            ->when($q !== '', fn ($query) => $query->where('title', 'like', '%'.$q.'%'))
-            ->when(PublicationStatus::tryFrom((string) $request->query('status')), fn ($query, $status) => $query->where('status', $status->value))
-            ->when($filter === 'rights_blocked', fn ($query) => $query->where('status', 'published')->where('rights_status', '!=', 'authorized'))
-            ->when($filter === 'no_lyrics', fn ($query) => $query->where('status', 'published')->whereDoesntHave('currentLyric'))
+        $songs = $this->listQuery($request)->with('artists')
             ->latest('updated_at')->latest('id')
             ->paginate(25)->withQueryString();
 
@@ -81,6 +76,85 @@ class SongController extends Controller
         $song->delete();
 
         return redirect()->route('admin.songs.index')->with('status', 'Song deleted.');
+    }
+
+    public function bulk(Request $request): RedirectResponse
+    {
+        Gate::authorize('viewAny', Song::class);
+        abort_unless($request->user()->atLeast(Role::Admin), 403);
+
+        $data = $request->validate([
+            'action' => ['required', 'in:publish,unpublish,authorize'],
+            'scope' => ['nullable', 'in:page,all'],
+            'ids' => ['nullable', 'array'],
+            'ids.*' => ['integer'],
+        ]);
+
+        $all = ($data['scope'] ?? 'page') === 'all';
+        if (! $all && empty($data['ids'])) {
+            return back()->with('status', 'Tick at least one song first.');
+        }
+
+        $query = $all ? $this->listQuery($request) : Song::query()->whereIn('id', $data['ids']);
+        $songs = $query->with('currentLyric')->orderBy('id')->take(1000)->get();
+
+        $done = 0;
+        $skippedNoLyrics = 0;
+        $skippedDenied = 0;
+
+        foreach ($songs as $song) {
+            if (! Gate::allows('update', $song)) {
+                $skippedDenied++;
+
+                continue;
+            }
+
+            if ($data['action'] === 'publish') {
+                if (! $song->currentLyric) {
+                    $skippedNoLyrics++;
+
+                    continue;
+                }
+                $song->update([
+                    'status' => 'published',
+                    'rights_status' => 'authorized',
+                    'published_at' => ($song->published_at && $song->published_at->lte(now())) ? $song->published_at : now(),
+                ]);
+            } elseif ($data['action'] === 'unpublish') {
+                $song->update(['status' => 'draft']);
+            } else {
+                $song->update(['rights_status' => 'authorized']);
+            }
+
+            AuditLogger::record('song.bulk_'.$data['action'], $song, ['bulk' => true]);
+            $done++;
+        }
+
+        $label = ['publish' => 'Published', 'unpublish' => 'Moved to draft:', 'authorize' => 'Authorized rights for'][$data['action']];
+        $message = "{$label} {$done} song".($done === 1 ? '' : 's').'.';
+        if ($skippedNoLyrics) {
+            $message .= " Skipped {$skippedNoLyrics} without lyrics.";
+        }
+        if ($skippedDenied) {
+            $message .= " Skipped {$skippedDenied} you cannot edit.";
+        }
+        if ($all && $songs->count() === 1000) {
+            $message .= ' Limit of 1000 per run reached, run it again for the rest.';
+        }
+
+        return back()->with('status', $message);
+    }
+
+    private function listQuery(Request $request): Builder
+    {
+        $q = trim((string) $request->input('q'));
+        $filter = $request->input('filter');
+
+        return Song::query()
+            ->when($q !== '', fn ($query) => $query->where('title', 'like', '%'.$q.'%'))
+            ->when(PublicationStatus::tryFrom((string) $request->input('status')), fn ($query, $status) => $query->where('status', $status->value))
+            ->when($filter === 'rights_blocked', fn ($query) => $query->where('status', 'published')->where('rights_status', '!=', 'authorized'))
+            ->when($filter === 'no_lyrics', fn ($query) => $query->where('status', 'published')->whereDoesntHave('currentLyric'));
     }
 
     private function formData(): array
