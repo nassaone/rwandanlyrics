@@ -7,6 +7,7 @@
     <x-json-ld :data="\App\Support\SeoSchema::album($album)" />
 @endpush
     <x-breadcrumbs :items="['Home' => route('home'), $album->title => null]" />
+    <div class="mt-3"><x-share :title="$album->title" :text="'Lyrics from '.$album->title.' on '.config('app.name')" /></div>
 
     <x-media-image :media="$album->cover" class="mb-4 max-h-80 rounded-md" />
     <h1>{{ $album->title }}</h1>

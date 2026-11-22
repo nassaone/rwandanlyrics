@@ -63,8 +63,8 @@
 
             <x-ad-slot name="song_bottom" />
 
-            <div class="mt-6" x-data>
-                <x-button variant="secondary" @click="navigator.share ? navigator.share({ title: document.title, url: location.href }) : navigator.clipboard.writeText(location.href)">Share</x-button>
+            <div class="mt-6">
+                <x-share :title="$song->title" :text="'Lyrics of '.$song->title.($artistNames ? ' by '.$artistNames : '').' on '.config('app.name')" />
             </div>
         </div>
 

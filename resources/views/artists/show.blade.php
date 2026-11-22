@@ -6,6 +6,7 @@
     <x-json-ld :data="\App\Support\SeoSchema::artist($artist)" />
 @endpush
     <x-breadcrumbs :items="['Home' => route('home'), 'Artists' => route('artists.index'), $artist->name => null]" />
+    <div class="mt-3"><x-share :title="$artist->name" :text="'Lyrics by '.$artist->name.' on '.config('app.name')" /></div>
 
     <header class="overflow-hidden rounded-2xl border border-line">
         @if ($artist->banner)
