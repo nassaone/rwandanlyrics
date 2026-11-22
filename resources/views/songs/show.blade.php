@@ -3,7 +3,7 @@
 <x-layouts.app
     :title="$song->seo_title ?: $song->title.' lyrics'.($artistNames ? ' - '.$artistNames : '')"
     :description="$song->seo_description ?: ('Lyrics of '.$song->title.($artistNames ? ' by '.$artistNames : '').' on Vocal Vibes Nation.')"
-    :robots="$song->noindex ? 'noindex,follow' : 'index,follow'">
+    :robots="($song->noindex || ! $song->currentLyric) ? 'noindex,follow' : 'index,follow'">
     @push('head')
         <x-json-ld :data="\App\Support\SeoSchema::song($song)" />
     @endpush

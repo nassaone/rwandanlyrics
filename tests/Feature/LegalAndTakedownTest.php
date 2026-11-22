@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Lyric;
 use App\Models\Song;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -74,6 +75,7 @@ class LegalAndTakedownTest extends TestCase
             $this->song('Vanish '.ucfirst($status), 'vanish-'.$status, ['rights_status' => $status]);
         }
 
+        Song::query()->each(fn ($s) => Lyric::factory()->for($s)->create());
         $search = $this->get('/search?q=vanish')->assertOk()->assertSee('Vanish Control');
         $sitemap = $this->get('/sitemaps/songs-1.xml')->assertOk()->assertSee('vanish-control', false);
 

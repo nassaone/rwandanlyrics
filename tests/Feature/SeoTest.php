@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Album;
 use App\Models\Artist;
+use App\Models\Lyric;
 use App\Models\Song;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -64,6 +65,7 @@ class SeoTest extends TestCase
         $this->song('Future Song', 'future-song', ['published_at' => now()->addDay()]);
         $this->song('Noindex Song', 'noindex-song', ['noindex' => true]);
 
+        Song::query()->each(fn ($s) => Lyric::factory()->for($s)->create());
         $this->get('/sitemap.xml')->assertOk()->assertSee('/sitemaps/songs-1.xml', false);
 
         $this->get('/sitemaps/songs-1.xml')->assertOk()
@@ -81,6 +83,7 @@ class SeoTest extends TestCase
         $this->album('Empty Album', 'empty-album');
         $this->song('Track', 'track', ['album_id' => $album->id], $withSong);
 
+        Song::query()->each(fn ($s) => Lyric::factory()->for($s)->create());
         $this->get('/sitemaps/artists-1.xml')->assertOk()->assertSee('/artists/has-songs', false)->assertDontSee('no-songs');
         $this->get('/sitemaps/albums-1.xml')->assertOk()->assertSee('/albums/full-album', false)->assertDontSee('empty-album');
     }

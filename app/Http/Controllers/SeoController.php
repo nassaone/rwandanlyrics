@@ -78,10 +78,10 @@ class SeoController extends Controller
     private function query(string $type)
     {
         return match ($type) {
-            'songs' => Song::publiclyVisible()->where('songs.noindex', false),
-            'artists' => Artist::published()->where('artists.noindex', false)->whereHas('songs', fn ($q) => $q->publiclyVisible()),
-            'albums' => Album::published()->where('albums.noindex', false)->whereHas('songs', fn ($q) => $q->publiclyVisible()),
-            'genres' => Genre::whereHas('songs', fn ($q) => $q->publiclyVisible()),
+            'songs' => Song::publiclyVisible()->where('songs.noindex', false)->whereHas('currentLyric'),
+            'artists' => Artist::published()->where('artists.noindex', false)->whereHas('songs', fn ($q) => $q->publiclyVisible()->whereHas('currentLyric')),
+            'albums' => Album::published()->where('albums.noindex', false)->whereHas('songs', fn ($q) => $q->publiclyVisible()->whereHas('currentLyric')),
+            'genres' => Genre::whereHas('songs', fn ($q) => $q->publiclyVisible()->whereHas('currentLyric')),
         };
     }
 
