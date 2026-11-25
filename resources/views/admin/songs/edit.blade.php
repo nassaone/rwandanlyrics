@@ -5,6 +5,10 @@
     @else
         <p class="mt-1 text-sm text-muted">This song is not visible to the public.</p>
     @endif
+    <p class="mt-2 text-sm text-muted">
+        {{ number_format($needLyrics) }} {{ $needLyrics === 1 ? 'song still needs' : 'songs still need' }} lyrics.
+        <a href="{{ route('admin.songs.index', ['filter' => 'needs_lyrics']) }}" class="text-accent-600 underline">Show list</a>
+    </p>
     <div class="mt-4">@include('admin.songs._form', ['action' => route('admin.songs.update', $song)])</div>
 
     @can('delete', $song)

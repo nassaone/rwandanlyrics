@@ -77,5 +77,10 @@
         </label>
     </section>
 
-    <x-button type="submit">Save song</x-button>
+    <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+        <x-button type="submit">Save song</x-button>
+        @if ($song->exists)
+            <x-button type="submit" variant="secondary" name="next" value="1">Save and open next song without lyrics</x-button>
+        @endif
+    </div>
 </form>

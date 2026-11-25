@@ -11,6 +11,7 @@ use App\Models\Artist;
 use App\Models\Genre;
 use App\Models\Language;
 use App\Models\Song;
+use App\Services\LyricsQueue;
 use App\Services\SongService;
 use App\Support\AuditLogger;
 use Illuminate\Contracts\View\View;
@@ -56,7 +57,7 @@ class SongController extends Controller
 
         $song->load(['artists', 'genres', 'currentLyric']);
 
-        return view('admin.songs.edit', $this->formData() + ['song' => $song]);
+        return view('admin.songs.edit', $this->formData() + ['song' => $song, 'needLyrics' => app(LyricsQueue::class)->remaining()]);
     }
 
     public function update(SongRequest $request, Song $song): RedirectResponse
@@ -64,6 +65,19 @@ class SongController extends Controller
         Gate::authorize('update', $song);
 
         $this->songs->save($song, $request->validated(), $request->user());
+
+        if ($request->boolean('next')) {
+            $queue = app(LyricsQueue::class);
+            $next = $queue->next($song);
+            $left = $queue->remaining();
+
+            if ($next) {
+                return redirect()->route('admin.songs.edit', $next)
+                    ->with('status', 'Song saved. '.number_format($left).' '.($left === 1 ? 'song still needs' : 'songs still need').' lyrics.');
+            }
+
+            return redirect()->route('admin.songs.index')->with('status', 'Song saved. Every song has lyrics.');
+        }
 
         return redirect()->route('admin.songs.edit', $song)->with('status', 'Song saved.');
     }
@@ -145,7 +159,8 @@ class SongController extends Controller
             ->when($q !== '', fn ($query) => $query->where('title', 'like', '%'.$q.'%'))
             ->when(PublicationStatus::tryFrom((string) $request->input('status')), fn ($query, $status) => $query->where('status', $status->value))
             ->when($filter === 'rights_blocked', fn ($query) => $query->where('status', 'published')->where('rights_status', '!=', 'authorized'))
-            ->when($filter === 'no_lyrics', fn ($query) => $query->where('status', 'published')->whereDoesntHave('currentLyric'));
+            ->when($filter === 'no_lyrics', fn ($query) => $query->where('status', 'published')->whereDoesntHave('currentLyric'))
+            ->when($filter === 'needs_lyrics', fn ($query) => $query->whereDoesntHave('currentLyric'));
     }
 
     private function formData(): array

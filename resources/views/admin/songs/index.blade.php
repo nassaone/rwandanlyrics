@@ -17,6 +17,8 @@
         <x-button type="submit" variant="secondary">Filter</x-button>
     </form>
 
+    <p class="mt-3 text-sm"><a href="{{ route('admin.songs.index', ['filter' => 'needs_lyrics']) }}" class="text-accent-600 underline">Show songs that still need lyrics</a></p>
+
     @php($canBulk = auth()->user()->atLeast(\App\Enums\Role::Admin))
 
     <form method="POST" action="{{ route('admin.songs.bulk') }}" x-data="{ n: 0, scope: 'page' }"
