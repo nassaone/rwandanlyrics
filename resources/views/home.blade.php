@@ -45,14 +45,19 @@
     @if ($trending->isNotEmpty())
         <section class="mt-10" aria-labelledby="popular">
             <h2 id="popular" class="mt-1">Trending now</h2>
-            <ul class="-mx-4 mt-4 flex snap-x gap-4 overflow-x-auto px-4 pb-3 sm:mx-0 sm:px-0">
+            <ul class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
                 @foreach ($trending as $song)
                     @php($cover = $song->cover ?? $song->album?->cover)
-                    <li class="w-40 shrink-0 snap-start sm:w-44">
-                        <a href="{{ route('songs.show', $song->slug) }}" class="group block">
-                            <x-avatar :media="$cover" :name="$song->title" shape="square" size="aspect-square h-auto w-full text-4xl" />
-                            <p class="mt-2 truncate font-medium group-hover:text-accent-600">{{ $song->title }}</p>
-                            <p class="truncate text-sm text-muted">{{ $song->artists->pluck('name')->join(', ') }}</p>
+                    <li>
+                        <a href="{{ route('songs.show', $song->slug) }}" class="group flex h-full flex-col rounded-xl border border-line bg-page p-2.5 transition hover:border-accent-600 hover:bg-accent-50 sm:p-3">
+                            <div class="relative">
+                                <x-avatar :media="$cover" :name="$song->title" shape="square" size="aspect-square h-auto w-full text-4xl" />
+                                <span class="absolute left-2 top-2 inline-flex size-7 items-center justify-center rounded-full bg-page text-xs font-bold text-ink shadow" aria-label="Rank {{ $loop->iteration }}">{{ $loop->iteration }}</span>
+                            </div>
+                            <div class="mt-3 min-w-0">
+                                <p class="line-clamp-1 font-semibold group-hover:text-accent-600">{{ $song->title }}</p>
+                                <p class="line-clamp-1 text-sm text-muted">{{ $song->artists->pluck('name')->join(', ') }}</p>
+                            </div>
                         </a>
                     </li>
                 @endforeach
