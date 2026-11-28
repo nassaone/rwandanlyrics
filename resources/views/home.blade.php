@@ -3,8 +3,8 @@
     <x-json-ld :data="\App\Support\SeoSchema::website()" />
 @endpush
     <section class="rounded-2xl bg-surface px-5 py-8 sm:px-10 sm:py-12">
-        <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_17rem]">
-            <div>
+        <div class="grid grid-cols-[minmax(0,1fr)] items-center gap-10 lg:grid-cols-[minmax(0,1fr)_17rem]">
+            <div class="min-w-0">
                 <h1 class="text-4xl font-extrabold tracking-tight sm:text-6xl">Rwandan lyrics</h1>
                 <div class="mt-4 flex h-1.5 w-24 overflow-hidden rounded-full" aria-hidden="true"><span class="flex-1 bg-accent-600"></span><span class="flex-1 bg-sun"></span><span class="flex-1 bg-sky"></span></div>
                 <p class="mt-4 max-w-xl text-lg text-muted">Find the lyrics to Rwandan songs by artist, album and genre. Only authorized lyrics are published here.</p>
