@@ -108,6 +108,7 @@ Route::fallback(fn () => abort(404))->middleware(ResolveRedirects::class);
 Route::get('/search', SearchController::class)
     ->middleware('throttle:60,1')
     ->name('search');
+Route::get('/search/suggest', [SearchController::class, 'suggest'])->middleware('throttle:60,1')->name('search.suggest');
 
 Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':contributor'])
     ->prefix('contribute')->name('contribute.')->group(function () {

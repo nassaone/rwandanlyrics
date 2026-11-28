@@ -10,9 +10,12 @@
             @endif
         </p>
     @else
-        @php $none = $songs->total() === 0 && $artists->isEmpty() && $albums->isEmpty(); @endphp
+        @php $none = $songs->total() === 0 && $artists->isEmpty() && $albums->isEmpty() && $lyricSongs->isEmpty(); @endphp
 
         @if ($none)
+            @if ($suggestion)
+                <p class="mt-4 text-lg">Did you mean <a href="{{ route('search', ['q' => $suggestion]) }}" class="font-semibold text-accent-600 underline">{{ $suggestion }}</a>?</p>
+            @endif
             <div class="mt-6">
                 <x-empty-state title="No results" message="Try a different spelling, or search for just the artist name." />
             </div>
@@ -52,6 +55,23 @@
                     @endforeach
                 </ul>
                 <div class="mt-6">{{ $songs->links() }}</div>
+            </section>
+        @endif
+
+        @if ($lyricSongs->isNotEmpty())
+            <section class="mt-8" aria-labelledby="lyrics-results">
+                <h2 id="lyrics-results" class="mt-1">Found in lyrics</h2>
+                <ul class="mt-2">
+                    @foreach ($lyricSongs as $song)
+                        @php([$before, $match, $after] = $song->snippet_parts)
+                        <li class="border-b border-line last:border-0">
+                            <a href="{{ route('songs.show', $song->slug) }}" class="-mx-2 block rounded-lg px-2 py-3 hover:bg-accent-50">
+                                <span class="block font-medium text-ink">{{ $song->title }} <span class="font-normal text-muted">{{ $song->artists->pluck('name')->join(', ') }}</span></span>
+                                <span class="mt-1 block font-serif text-sm text-muted">{{ $before }}@if ($match !== '')<mark class="rounded bg-sun px-0.5 text-on-sun">{{ $match }}</mark>@endif{{ $after }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </section>
         @endif
     @endif
