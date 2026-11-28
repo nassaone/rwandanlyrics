@@ -48,7 +48,7 @@ class SongController extends Controller
     {
         $song = Song::publiclyVisible()
             ->where('songs.slug', $slug)
-            ->with(['artists', 'genres', 'language', 'currentLyric'])
+            ->with(['artists.image', 'genres', 'language', 'currentLyric'])
             ->firstOrFail();
 
         $linkableArtistIds = Artist::published()
