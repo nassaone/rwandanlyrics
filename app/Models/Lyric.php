@@ -10,7 +10,7 @@ class Lyric extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['song_id', 'body', 'revision_number', 'is_current', 'note', 'created_by'];
+    protected $fillable = ['song_id', 'body', 'revision_number', 'is_current', 'note', 'created_by', 'contributed_by'];
 
     protected function casts(): array
     {

@@ -1,6 +1,7 @@
-<x-layouts.app :title="$song ? 'Suggest a correction' : 'Submit a song'" robots="noindex,nofollow">
-    <h1>{{ $song ? 'Suggest a correction' : 'Submit a song' }}</h1>
-    <p class="mt-1 text-sm text-muted">Only submit lyrics you wrote or have permission to share. An editor reviews every submission before anything is published.</p>
+@php($adding = $song && ! $song->currentLyric)
+<x-layouts.app :title="$adding ? 'Add lyrics' : ($song ? 'Suggest a correction' : 'Submit a song')" robots="noindex,nofollow">
+    <h1>{{ $adding ? 'Add lyrics' : ($song ? 'Suggest a correction' : 'Submit a song') }}</h1>
+    <p class="mt-1 text-sm text-muted">Only submit lyrics you wrote or have permission to share. An editor reviews every submission before anything is published. If your lyrics are approved, your name is shown on the song page as the contributor.</p>
 
     <form method="POST" action="{{ route('contribute.store') }}" class="mt-6 space-y-5">
         @csrf

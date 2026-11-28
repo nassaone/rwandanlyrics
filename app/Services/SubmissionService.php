@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\SubmissionStatus;
 use App\Enums\SubmissionType;
+use App\Models\Lyric;
 use App\Models\Song;
 use App\Models\Submission;
 use App\Models\User;
@@ -39,6 +40,11 @@ class SubmissionService
                 $this->addRevision($submission->song, $submission->lyrics, $submission->user_id, 'Correction, submission #'.$submission->id);
                 $song = $submission->song;
                 $submission->result_song_id = $song->id;
+            }
+
+            if ($song && $submission->lyrics) {
+                Lyric::query()->where('song_id', $song->id)->where('is_current', true)
+                    ->update(['contributed_by' => $submission->user_id]);
             }
 
             $this->finish($submission, $reviewer, SubmissionStatus::Approved, $notes);

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Album;
 use App\Models\Artist;
 use App\Models\Genre;
+use App\Models\Lyric;
 use App\Models\Song;
+use App\Models\User;
 use App\Services\ViewStats;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -80,6 +82,11 @@ class SongController extends Controller
             ->whereNotIn('songs.id', $moreFromArtist->pluck('id')->merge($related->pluck('id')))
             ->limit(6)->get();
 
-        return view('songs.show', compact('song', 'linkableArtistIds', 'album', 'moreArtist', 'moreFromArtist', 'related', 'latest'));
+        $contributorId = $song->currentLyric
+            ? Lyric::where('song_id', $song->id)->whereNotNull('contributed_by')->orderByDesc('revision_number')->value('contributed_by')
+            : null;
+        $contributor = $contributorId ? User::find($contributorId) : null;
+
+        return view('songs.show', compact('song', 'linkableArtistIds', 'album', 'moreArtist', 'moreFromArtist', 'related', 'latest', 'contributor'));
     }
 }

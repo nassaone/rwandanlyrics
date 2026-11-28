@@ -53,8 +53,15 @@
                     <div class="mt-2 rounded-xl border border-line border-l-4 border-l-sun bg-surface px-5 py-7 sm:px-9">
                         <x-lyrics-body :text="$song->currentLyric->body" />
                     </div>
+                    @if ($contributor)
+                        <p class="mt-3 text-sm text-muted" data-contributor>Lyrics contributed by <span class="font-medium text-ink">{{ $contributor->name }}</span></p>
+                    @endif
                 @else
-                    <x-empty-state title="Lyrics are not available for this song" />
+                    <div class="rounded-xl border border-dashed border-line bg-surface px-6 py-10 text-center">
+                        <p class="text-lg font-semibold">Lyrics are not available for this song yet</p>
+                        <p class="mx-auto mt-2 max-w-md text-sm text-muted">Know the words? Add them. An editor reviews every submission, and your name is shown as the contributor once the lyrics are approved.</p>
+                        <a href="{{ route('contribute.create', ['song' => $song->slug]) }}" class="mt-5 inline-flex min-h-11 items-center justify-center rounded-md bg-accent-600 px-5 py-2 text-sm font-medium text-on-accent hover:bg-accent-700">Add lyrics</a>
+                    </div>
                 @endif
             </section>
 
