@@ -32,12 +32,9 @@
                 </div>
             </header>
 
-            <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
-                <x-share :title="$song->title" :text="'Lyrics of '.$song->title.($artistNames ? ' by '.$artistNames : '').' on '.config('app.name')" />
-                @if ($viewCount > 0)
-                    <p class="text-sm text-muted" data-views>{{ \App\Services\ViewStats::compact($viewCount) }} {{ \Illuminate\Support\Str::plural('view', $viewCount) }}</p>
-                @endif
-            </div>
+            @if ($viewCount > 0)
+                <p class="mt-5 text-sm text-muted" data-views>{{ \App\Services\ViewStats::compact($viewCount) }} {{ \Illuminate\Support\Str::plural('view', $viewCount) }}</p>
+            @endif
 
             @if ($song->description)
                 <p class="mt-5 max-w-2xl whitespace-pre-line text-muted">{{ $song->description }}</p>
@@ -51,6 +48,7 @@
 
             <section class="mt-6" aria-labelledby="lyrics-heading">
                 <h2 id="lyrics-heading" class="sr-only">Lyrics</h2>
+                <x-lyrics-toolbar :song="$song" :artists="$artistNames" :body="$song->currentLyric?->body" />
                 @if ($song->currentLyric)
                     <div class="mt-2 rounded-xl border border-line border-l-4 border-l-sun bg-surface px-5 py-7 sm:px-9">
                         <x-lyrics-body :text="$song->currentLyric->body" />
