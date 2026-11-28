@@ -1,4 +1,4 @@
-@props(['title' => null, 'description' => null, 'robots' => 'index,follow', 'ogType' => 'website', 'searchBand' => true])
+@props(['title' => null, 'description' => null, 'robots' => 'index,follow', 'ogType' => 'website', 'searchBand' => true, 'ogImage' => null])
 @php $pageDescription = trim($__env->yieldPushContent('seo_description')) ?: ($description ?: config('rwandanlyrics.default_description', 'Read Rwandan lyrics: songs, artists and albums, with authorized lyrics only.')); @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -23,11 +23,11 @@
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:type" content="{{ $ogType }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('og-default.png') }}">
+    <meta property="og:image" content="{{ $ogImage ?: asset('og-default.png') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="{{ asset('og-default.png') }}">
+    <meta name="twitter:image" content="{{ $ogImage ?: asset('og-default.png') }}">
     @stack('head')
     <x-site-code position="head" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])

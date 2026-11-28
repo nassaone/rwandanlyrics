@@ -28,6 +28,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeoController;
+use App\Http\Controllers\SocialCardController;
 use App\Http\Controllers\SongController;
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\EnsureUserIsActive;
@@ -109,6 +110,7 @@ Route::get('/search', SearchController::class)
     ->middleware('throttle:60,1')
     ->name('search');
 Route::get('/search/suggest', [SearchController::class, 'suggest'])->middleware('throttle:60,1')->name('search.suggest');
+Route::get('/social/songs/{slug}.png', [SocialCardController::class, 'song'])->where('slug', '[A-Za-z0-9_\-]+')->middleware('throttle:120,1')->name('social.song');
 
 Route::middleware(['auth', EnsureUserIsActive::class, EnsureRole::class.':contributor'])
     ->prefix('contribute')->name('contribute.')->group(function () {
